@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular 21 DI & Injection Context - Complete Guide</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+            animation: fadeIn 1s ease-in;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        .section h2 {
+            color: #1e3c72;
+            border-bottom: 3px solid #2a5298;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+        
+        .section h3 {
+            color: #2a5298;
+            margin: 20px 0 15px 0;
+            font-size: 1.4em;
+        }
+        
+        .mermaid {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border: 1px solid #e9ecef;
+            overflow-x: auto;
+        }
+        
+        .code-example {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+        .decorator { color: #d4d400; }
+        
+        .info-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #2a5298;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 0 5px;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 Angular 21 DI & Injection Context</h1>
+        <p>Complete Guide to Dependency Injection in Standalone Applications</p>
+        <div style="margin-top: 20px;">
+            <span class="badge">Angular 21</span>
+            <span class="badge">Standalone</span>
+            <span class="badge">Zoneless</span>
+            <span class="badge">Signals</span>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <!-- Section 1: Injection Context Overview -->
+        <div class="section">
+            <h2>1. Injection Context - Complete Overview</h2>
+            
+            <div class="mermaid">
+                graph TD
+                    A[Injection Context] --> B{Context Types}
+                    B --> C[Constructor Context]
+                    B --> D[Field Initializer Context]
+                    B --> E[Factory Function Context]
+                    B --> F[Guard/Resolver Context]
+                    
+                    C --> G[Component Constructor]
+                    C --> H[Service Constructor]
+                    C --> I[Directive Constructor]
+                    
+                    D --> J[Class Fields]
+                    D --> K[Property Declaration]
+                    
+                    E --> L[useFactory Provider]
+                    E --> M[InjectionToken Factory]
+                    
+                    F --> N[Route Guards]
+                    F --> O[Route Resolvers]
+                    
+                    G --> P[inject Function Available]
+                    H --> P
+                    I --> P
+                    J --> P
+                    K --> P
+                    L --> P
+                    M --> P
+                    N --> P
+                    O --> P
+                    
+                    P --> Q{Valid Context?}
+                    Q -->|Yes| R[Service Instance Returned]
+                    Q -->|No| S[Error: inject requires context]
+            </div>
+            
+            <div class="info-box">
+                <strong>💡 Key Point:</strong> The inject() function can only be called in an injection context. 
+                This includes constructors, field initializers, factory functions, and certain lifecycle points.
+            </div>
+        </div>
+
+        <!-- Section 2: Service Creation & Registration -->
+        <div class="section">
+            <h2>2. Service Creation & Registration Flow</h2>
+            
+            <div class="mermaid">
+                graph TD
+                    A[Define Service Class] --> B{Injectable Decorator}
+                    B --> C[providedIn Option]
+                    
+                    C --> D{Scope Type?}
+                    D -->|root| E[Root Injector<br/>Application-wide Singleton]
+                    D -->|platform| F[Platform Injector<br/>Shared across apps]
+                    D -->|any| G[New Instance per Module]
+                    D -->|null| H[Must Provide Manually]
+                    
+                    E --> I[Tree-shakeable]
+                    F --> I
+                    G --> J[Not Tree-shakeable]
+                    H --> J
+                    
+                    I --> K[Service Ready]
+                    J --> K
+                    
+                    K --> L{How to Provide?}
+                    L -->|bootstrapApplication| M[Global Providers Array]
+                    L -->|Component| N[Component Providers]
+                    L -->|Route| O[Route Providers]
+                    
+                    M --> P[Application Scope]
+                    N --> Q[Component Tree Scope]
+                    O --> R[Route Tree Scope]
+                    
+                    P --> S[Service Instance Created on First Use]
+                    Q --> S
+                    R --> S
+            </div>
+            
+            <h3>Service Definition Examples:</h3>
+            
+            <div class="code-example">
+<span class="comment">// 1. Root-level singleton service (recommended)</span>
+<span class="decorator">@Injectable</span>({
+  <span class="keyword">providedIn</span>: <span class="string">'root'</span>
+})
+<span class="keyword">export class</span> UserService {
+  <span class="keyword">private</span> users = signal&lt;User[]&gt;([]);
+  
+  <span class="keyword">constructor</span>() {
+    console.log(<span class="string">'UserService created - singleton instance'</span>);
+  }
+}
+
+<span class="comment">// 2. Component-level service</span>
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> FormStateService {
+  <span class="keyword">private</span> formData = signal({});
+}
+
+<span class="decorator">@Component</span>({
+  selector: <span class="string">'app-user-form'</span>,
+  standalone: <span class="keyword">true</span>,
+  providers: [FormStateService], <span class="comment">// New instance per component</span>
+  template: <span class="string">'...'</span>
+})
+<span class="keyword">export class</span> UserFormComponent {}
+
+<span class="comment">// 3. Route-level service</span>
+<span class="keyword">export const</span> userRoutes: Routes = [
+  {
+    path: <span class="string">'users'</span>,
+    providers: [UserRouteService], <span class="comment">// Shared in route tree</span>
+    loadComponent: () =&gt; import(<span class="string">'./user.component'</span>)
+  }
+];
+            </div>
+        </div>
+
+        <!-- Section 3: Service Resolution Process -->
+        <div class="section">
+            <h2>3. Service Resolution & Injector Hierarchy</h2>
+            
+            <div class="mermaid">
+                graph TB
+                    A[Component Requests Service<br/>inject MyService] --> B{Check Component Injector}
+                    
+                    B -->|Found| C[Return Instance]
+                    B -->|Not Found| D{Check Parent Component}
+                    
+                    D -->|Found| E[Return Instance]
+                    D -->|Not Found| F{Check Route Injector}
+                    
+                    F -->|Found| G[Return Instance]
+                    F -->|Not Found| H{Check Root Injector}
+                    
+                    H -->|Found| I[Return Instance]
+                    H -->|Not Found| J{Check Platform Injector}
+                    
+                    J -->|Found| K[Return Instance]
+                    J -->|Not Found| L[NullInjectorError]
+                    
+                    C --> M[Use Service]
+                    E --> M
+                    G --> M
+                    I --> M
+                    K --> M
+                    
+                    M --> N{Service Exists?}
+                    N -->|No| O[Create New Instance]
+                    N -->|Yes| P[Return Cached Instance]
+                    
+                    O --> Q[Call Constructor]
+                    Q --> R[Resolve Dependencies]
+                    R --> S[Cache Instance]
+                    S --> T[Return to Component]
+                    
+                    P --> T
+            </div>
+            
+            <div class="warning-box">
+                <strong>⚠️ Important:</strong> The injector hierarchy determines service scope and lifetime. 
+                Services are cached at the injector level where they're provided.
+            </div>
+        </div>
+
+        <!-- Section 4: Component + Service Integration -->
+        <div class="section">
+            <h2>4. Component & Service Integration Flow</h2>
+            
+            <div class="mermaid">
+                graph TD
+                    A[Component Creation] --> B[Constructor Phase]
+                    
+                    B --> C[Injection Context Active]
+                    C --> D[inject Function Calls]
+                    
+                    D --> E[Service 1: inject UserService]
+                    D --> F[Service 2: inject HttpClient]
+                    D --> G[Service 3: inject Custom]
+                    
+                    E --> H[Resolve from Injector]
+                    F --> H
+                    G --> H
+                    
+                    H --> I{Instance Exists?}
+                    I -->|Yes| J[Return Cached]
+                    I -->|No| K[Create New]
+                    
+                    K --> L[Service Constructor]
+                    L --> M[Service Dependencies]
+                    M --> N[Service Ready]
+                    
+                    J --> O[All Services Injected]
+                    N --> O
+                    
+                    O --> P[Component Fields Init]
+                    P --> Q[Signals Setup]
+                    Q --> R[Effects Setup]
+                    
+                    R --> S[ngOnInit]
+                    S --> T[Component Ready]
+                    
+                    T --> U[Service Methods Available]
+                    U --> V[Component Lifecycle]
+            </div>
+            
+            <h3>Complete Integration Example:</h3>
+            
+            <div class="code-example">
+<span class="decorator">@Component</span>({
+  selector: <span class="string">'app-user-list'</span>,
+  standalone: <span class="keyword">true</span>,
+  imports: [CommonModule],
+  template: <span class="string">`
+    &lt;div class="user-list"&gt;
+      @if (loading()) {
+        &lt;div&gt;Loading users...&lt;/div&gt;
+      }
+      
+      @for (user of users(); track user.id) {
+        &lt;div class="user-card"&gt;
+          {{ user.name }} - {{ user.role }}
+        &lt;/div&gt;
+      }
+      
+      &lt;button (click)="refreshUsers()"&gt;Refresh&lt;/button&gt;
+    &lt;/div&gt;
+  `</span>
+})
+<span class="keyword">export class</span> UserListComponent {
+  <span class="comment">// 1. Services injection (in injection context)</span>
+  <span class="keyword">private</span> userService = inject(UserService);
+  <span class="keyword">private</span> http = inject(HttpClient);
+  <span class="keyword">private</span> router = inject(Router);
+  
+  <span class="comment">// 2. State signals</span>
+  users = signal&lt;User[]&gt;([]);
+  loading = signal(<span class="keyword">false</span>);
+  
+  <span class="comment">// 3. Computed values from service</span>
+  totalUsers = computed(() =&gt; <span class="keyword">this</span>.users().length);
+  
+  <span class="comment">// 4. Effects for reactive updates</span>
+  <span class="keyword">constructor</span>() {
+    <span class="comment">// Still in injection context</span>
+    <span class="keyword">const</span> destroyRef = inject(DestroyRef);
+    
+    <span class="comment">// Auto-sync with service state</span>
+    effect(() =&gt; {
+      <span class="keyword">const</span> serviceUsers = <span class="keyword">this</span>.userService.getUsers();
+      <span class="keyword">this</span>.users.set(serviceUsers);
+    });
+    
+    <span class="comment">// Cleanup on destroy</span>
+    destroyRef.onDestroy(() =&gt; {
+      console.log(<span class="string">'Component cleanup'</span>);
+    });
+  }
+  
+  <span class="comment">// 5. Using service methods</span>
+  <span class="keyword">async</span> refreshUsers() {
+    <span class="keyword">this</span>.loading.set(<span class="keyword">true</span>);
+    <span class="keyword">try</span> {
+      <span class="keyword">await this</span>.userService.loadUsers();
+    } <span class="keyword">finally</span> {
+      <span class="keyword">this</span>.loading.set(<span class="keyword">false</span>);
+    }
+  }
+}
+            </div>
+        </div>
+
+        <!-- Section 5: Advanced Injection Patterns -->
+        <div class="section">
+            <h2>5. Advanced Injection Patterns</h2>
+            
+            <div class="mermaid">
+                graph TD
+                    A[Advanced DI Patterns] --> B[Factory Providers]
+                    A --> C[InjectionToken]
+                    A --> D[Multi Providers]
+                    A --> E[Optional/Self/SkipSelf]
+                    
+                    B --> F[useFactory Function]
+                    F --> G[Dynamic Service Creation]
+                    
+                    C --> H[Type-safe Config]
+                    H --> I[APP_CONFIG Token]
+                    
+                    D --> J[Multiple Instances]
+                    J --> K[HTTP_INTERCEPTORS]
+                    
+                    E --> L[Decorator Modifiers]
+                    L --> M[@Optional]
+                    L --> N[@Self]
+                    L --> O[@SkipSelf]
+                    L --> P[@Host]
+                    
+                    G --> Q[Conditional Logic]
+                    I --> Q
+                    K --> Q
+                    
+                    Q --> R[Resolved Service]
+            </div>
+            
+            <h3>Advanced Pattern Examples:</h3>
+            
+            <div class="code-example">
+<span class="comment">// 1. InjectionToken with Factory</span>
+<span class="keyword">export const</span> API_CONFIG = <span class="keyword">new</span> InjectionToken&lt;ApiConfig&gt;(<span class="string">'api.config'</span>, {
+  providedIn: <span class="string">'root'</span>,
+  factory: () =&gt; ({
+    baseUrl: environment.apiUrl,
+    timeout: 5000
+  })
+});
+
+<span class="comment">// 2. Factory Provider with Dependencies</span>
+<span class="keyword">export const</span> loggerProvider = {
+  provide: LoggerService,
+  useFactory: (http: HttpClient, config: ApiConfig) =&gt; {
+    <span class="keyword">return new</span> LoggerService(http, config.logLevel);
+  },
+  deps: [HttpClient, API_CONFIG]
+};
+
+<span class="comment">// 3. Multi Providers (e.g., HTTP Interceptors)</span>
+<span class="keyword">export const</span> authInterceptorProvider = {
+  provide: HTTP_INTERCEPTORS,
+  useClass: AuthInterceptor,
+  multi: <span class="keyword">true</span>
+};
+
+<span class="comment">// 4. Using in Component with Modifiers</span>
+<span class="decorator">@Component</span>({
+  selector: <span class="string">'app-feature'</span>,
+  standalone: <span class="keyword">true</span>
+})
+<span class="keyword">export class</span> FeatureComponent {
+  <span class="comment">// Optional injection - won't error if not found</span>
+  <span class="keyword">private</span> optionalService = inject(OptionalService, { optional: <span class="keyword">true</span> });
+  
+  <span class="comment">// Self injection - only from this component's injector</span>
+  <span class="keyword">private</span> selfService = inject(LocalService, { self: <span class="keyword">true</span> });
+  
+  <span class="comment">// Skip self - skip this component's injector</span>
+  <span class="keyword">private</span> parentService = inject(SharedService, { skipSelf: <span class="keyword">true</span> });
+  
+  <span class="comment">// Host injection - from host component</span>
+  <span class="keyword">private</span> hostService = inject(HostService, { host: <span class="keyword">true</span> });
+  
+  <span class="keyword">constructor</span>() {
+    <span class="keyword">if</span> (<span class="keyword">this</span>.optionalService) {
+      console.log(<span class="string">'Optional service available'</span>);
+    }
+  }
+}
+            </div>
+        </div>
+
+        <!-- Section 6: Service Lifecycle -->
+        <div class="section">
+            <h2>6. Service Lifecycle & Memory Management</h2>
+            
+            <div class="mermaid">
+                graph TD
+                    A[Service Request] --> B{First Request?}
+                    
+                    B -->|Yes| C[Create Instance]
+                    B -->|No| D[Return Cached]
+                    
+                    C --> E[Constructor Called]
+                    E --> F[Dependencies Injected]
+                    F --> G[Service Initialized]
+                    G --> H[Cache in Injector]
+                    H --> I[Return to Consumer]
+                    
+                    D --> I
+                    
+                    I --> J[Service in Use]
+                    
+                    J --> K{Scope Type?}
+                    K -->|Root| L[Lives Forever<br/>Until App Destroy]
+                    K -->|Component| M[Lives with Component]
+                    K -->|Route| N[Lives with Route]
+                    
+                    M --> O{Component Destroyed?}
+                    O -->|Yes| P[Service Destroyed]
+                    O -->|No| J
+                    
+                    N --> Q{Route Deactivated?}
+                    Q -->|Yes| R[Service Destroyed]
+                    Q -->|No| J
+                    
+                    L --> S[App Shutdown]
+                    S --> T[All Services Destroyed]
+                    
+                    P --> U[Garbage Collection]
+                    R --> U
+                    T --> U
+            </div>
+            
+            <div class="success-box">
+                <strong>✅ Best Practice:</strong> Use root-level services for shared state, 
+                component-level for local state, and always clean up subscriptions in services.
+            </div>
+        </div>
+
+        <!-- Section 7: Testing with DI -->
+        <div class="section">
+            <h2>7. Testing Services & DI</h2>
+            
+            <div class="code-example">
+<span class="comment">// Testing Service with Dependencies</span>
+describe(<span class="string">'UserService'</span>, () =&gt; {
+  <span class="keyword">let</span> service: UserService;
+  <span class="keyword">let</span> httpMock: HttpTestingController;
+  
+  beforeEach(() =&gt; {
+    TestBed.configureTestingModule({
+      providers: [
+        UserService,
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
+    });
+    
+    <span class="comment">// Inject services in test context</span>
+    service = TestBed.inject(UserService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+  
+  it(<span class="string">'should load users'</span>, () =&gt; {
+    <span class="keyword">const</span> mockUsers = [{ id: 1, name: <span class="string">'John'</span> }];
+    
+    service.loadUsers();
+    
+    <span class="keyword">const</span> req = httpMock.expectOne(<span class="string">'/api/users'</span>);
+    expect(req.request.method).toBe(<span class="string">'GET'</span>);
+    req.flush(mockUsers);
+    
+    expect(service.users()).toEqual(mockUsers);
+  });
+});
+
+<span class="comment">// Testing Component with Mock Services</span>
+describe(<span class="string">'UserComponent'</span>, () =&gt; {
+  <span class="keyword">let</span> component: UserComponent;
+  <span class="keyword">let</span> mockUserService: jasmine.SpyObj&lt;UserService&gt;;
+  
+  beforeEach(() =&gt; {
+    mockUserService = jasmine.createSpyObj(<span class="string">'UserService'</span>, [<span class="string">'loadUsers'</span>]);
+    
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: UserService, useValue: mockUserService }
+      ]
+    });
+    
+    <span class="comment">// Create component with mocked service</span>
+    component = TestBed.createComponent(UserComponent).componentInstance;
+  });
+  
+  it(<span class="string">'should use injected service'</span>, () =&gt; {
+    component.refreshUsers();
+    expect(mockUserService.loadUsers).toHaveBeenCalled();
+  });
+});
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Created with ❤️ for Angular 21 Developers</p>
+            <p>© 2024 - Ready for Production</p>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+</html>
