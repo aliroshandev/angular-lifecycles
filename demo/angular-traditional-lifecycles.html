@@ -86,12 +86,29 @@
           line-height: 1.6;
       }
 
-      .keyword { color: #569cd6; }
-      .string { color: #ce9178; }
-      .comment { color: #6a9955; }
-      .decorator { color: #d4d400; }
-      .method { color: #dcdcaa; }
-      .property { color: #9cdcfe; }
+      .keyword {
+          color: #569cd6;
+      }
+
+      .string {
+          color: #ce9178;
+      }
+
+      .comment {
+          color: #6a9955;
+      }
+
+      .decorator {
+          color: #d4d400;
+      }
+
+      .method {
+          color: #dcdcaa;
+      }
+
+      .property {
+          color: #9cdcfe;
+      }
 
       .info-box {
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -148,8 +165,12 @@
       }
 
       @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          from {
+              opacity: 0;
+          }
+          to {
+              opacity: 1;
+          }
       }
 
       @keyframes slideUp {
@@ -251,7 +272,8 @@
     </div>
 
     <div class="info-box">
-      <strong>💡 Key Point:</strong> Lifecycle hooks execute in a specific order. Understanding this order is crucial for proper component initialization and cleanup.
+      <strong>💡 Key Point:</strong> Lifecycle hooks execute in a specific order. Understanding this order is crucial for
+      proper component initialization and cleanup.
     </div>
   </div>
 
@@ -367,7 +389,8 @@
         &lt;/div&gt;
     `</span>
       })
-      <span class="keyword">export class</span> <span class="method">UserDetailComponent</span> <span class="keyword">implements</span> OnChanges {
+      <span class="keyword">export class</span> <span class="method">UserDetailComponent</span> <span class="keyword">implements</span>
+      OnChanges {
       <span class="decorator">@Input()</span> <span class="property">user</span>: User;
       <span class="decorator">@Input()</span> <span class="property">status</span>: <span class="keyword">string</span>;
 
@@ -376,7 +399,8 @@
       <span class="method">ngOnChanges</span>(changes: SimpleChanges): <span class="keyword">void</span> {
       <span class="comment">// Called before ngOnInit() and whenever one or more inputs change</span>
 
-      <span class="keyword">for</span> (<span class="keyword">const</span> propName <span class="keyword">in</span> changes) {
+      <span class="keyword">for</span> (<span class="keyword">const</span> propName <span class="keyword">in</span>
+      changes) {
       <span class="keyword">const</span> change = changes[propName];
       <span class="keyword">const</span> current = JSON.stringify(change.currentValue);
       <span class="keyword">const</span> previous = JSON.stringify(change.previousValue);
@@ -394,7 +418,8 @@
       }
       }
 
-      <span class="keyword">private</span> <span class="method">validateUser</span>(user: User): <span class="keyword">void</span> {
+      <span class="keyword">private</span> <span class="method">validateUser</span>(user: User): <span class="keyword">void</span>
+      {
       <span class="comment">// Validation logic</span>
       <span class="keyword">if</span> (user.age < 0) {
       console.warn(<span class="string">'Invalid age detected!'</span>);
@@ -404,7 +429,8 @@
     </div>
 
     <div class="warning-box">
-      <strong>⚠️ Important:</strong> ngOnChanges only detects changes to primitive input values and object references. It won't detect mutations within objects or arrays.
+      <strong>⚠️ Important:</strong> ngOnChanges only detects changes to primitive input values and object references.
+      It won't detect mutations within objects or arrays.
     </div>
   </div>
 
@@ -445,8 +471,10 @@
         &lt;/div&gt;
     `</span>
       })
-      <span class="keyword">export class</span> <span class="method">UserListComponent</span> <span class="keyword">implements</span> OnInit, OnDestroy {
-      <span class="decorator">@Input()</span> <span class="property">department</span>: <span class="keyword">string</span>;
+      <span class="keyword">export class</span> <span class="method">UserListComponent</span> <span class="keyword">implements</span>
+      OnInit, OnDestroy {
+      <span class="decorator">@Input()</span> <span class="property">department</span>: <span
+      class="keyword">string</span>;
 
       <span class="property">users</span>: User[] = [];
       <span class="property">loading</span> = <span class="keyword">false</span>;
@@ -460,7 +488,8 @@
       <span class="comment">// Constructor: Only for DI</span>
       <span class="comment">// DON'T: Make HTTP calls here</span>
       <span class="comment">// DON'T: Access @Input properties (not set yet)</span>
-      console.log(<span class="string">'Constructor: department is'</span>, <span class="keyword">this</span>.department); <span class="comment">// undefined!</span>
+      console.log(<span class="string">'Constructor: department is'</span>, <span class="keyword">this</span>.department);
+      <span class="comment">// undefined!</span>
       }
 
       <span class="method">ngOnInit</span>(): <span class="keyword">void</span> {
@@ -469,10 +498,12 @@
       <span class="comment">// DO: HTTP requests</span>
       <span class="comment">// DO: Setup subscriptions</span>
 
-      console.log(<span class="string">'ngOnInit: department is'</span>, <span class="keyword">this</span>.department); <span class="comment">// Has value!</span>
+      console.log(<span class="string">'ngOnInit: department is'</span>, <span class="keyword">this</span>.department);
+      <span class="comment">// Has value!</span>
 
       <span class="comment">// 1. Get route params</span>
-      <span class="keyword">const</span> id = <span class="keyword">this</span>.route.snapshot.paramMap.get(<span class="string">'id'</span>);
+      <span class="keyword">const</span> id = <span class="keyword">this</span>.route.snapshot.paramMap.get(<span
+      class="string">'id'</span>);
 
       <span class="comment">// 2. Initialize component state</span>
       <span class="keyword">this</span>.loading = <span class="keyword">true</span>;
@@ -512,7 +543,8 @@
     </div>
 
     <div class="success-box">
-      <strong>✅ Best Practice:</strong> Use ngOnInit for component initialization logic, not the constructor. The constructor should only be used for dependency injection.
+      <strong>✅ Best Practice:</strong> Use ngOnInit for component initialization logic, not the constructor. The
+      constructor should only be used for dependency injection.
     </div>
   </div>
 
@@ -555,18 +587,21 @@
         &lt;/div&gt;
     `</span>
       })
-      <span class="keyword">export class</span> <span class="method">DifferCheckComponent</span> <span class="keyword">implements</span> DoCheck, OnInit {
+      <span class="keyword">export class</span> <span class="method">DifferCheckComponent</span> <span class="keyword">implements</span>
+      DoCheck, OnInit {
       <span class="decorator">@Input()</span> <span class="property">items</span>: any[] = [];
 
       <span class="property">arrayChangeCount</span> = 0;
       <span class="keyword">private</span> <span class="property">differ</span>: IterableDiffer&lt;any&gt;;
       <span class="keyword">private</span> <span class="property">oldLength</span> = 0;
 
-      <span class="keyword">constructor</span>(<span class="keyword">private</span> <span class="property">iterableDiffers</span>: IterableDiffers) {}
+      <span class="keyword">constructor</span>(<span class="keyword">private</span> <span class="property">iterableDiffers</span>:
+      IterableDiffers) {}
 
       <span class="method">ngOnInit</span>(): <span class="keyword">void</span> {
       <span class="comment">// Create a differ to track array changes</span>
-      <span class="keyword">this</span>.differ = <span class="keyword">this</span>.iterableDiffers.find(<span class="keyword">this</span>.items).create();
+      <span class="keyword">this</span>.differ = <span class="keyword">this</span>.iterableDiffers.find(<span
+      class="keyword">this</span>.items).create();
       }
 
       <span class="method">ngDoCheck</span>(): <span class="keyword">void</span> {
@@ -588,7 +623,8 @@
       }
 
       <span class="comment">// Example 2: Manual deep object checking</span>
-      <span class="keyword">if</span> (<span class="keyword">this</span>.items.length !== <span class="keyword">this</span>.oldLength) {
+      <span class="keyword">if</span> (<span class="keyword">this</span>.items.length !== <span
+      class="keyword">this</span>.oldLength) {
       console.log(<span class="string">`Length changed from ${this.oldLength} to ${this.items.length}`</span>);
       <span class="keyword">this</span>.oldLength = <span class="keyword">this</span>.items.length;
       }
@@ -600,7 +636,8 @@
     </div>
 
     <div class="error-box">
-      <strong>🚨 Performance Warning:</strong> ngDoCheck is called very frequently - on every change detection cycle. Avoid heavy computations here or your app will become sluggish!
+      <strong>🚨 Performance Warning:</strong> ngDoCheck is called very frequently - on every change detection cycle.
+      Avoid heavy computations here or your app will become sluggish!
     </div>
   </div>
 
@@ -676,7 +713,8 @@
         &lt;/div&gt;
     `</span>
       })
-      <span class="keyword">export class</span> <span class="method">TabsComponent</span> <span class="keyword">implements</span> AfterContentInit, AfterContentChecked {
+      <span class="keyword">export class</span> <span class="method">TabsComponent</span> <span class="keyword">implements</span>
+      AfterContentInit, AfterContentChecked {
       <span class="decorator">@ContentChildren</span>(TabComponent) <span class="property">tabs</span>: QueryList&lt;TabComponent&gt;;
 
       <span class="method">ngAfterContentInit</span>(): <span class="keyword">void</span> {
@@ -759,8 +797,10 @@
         &lt;button (click)="updateChart()"&gt;Update&lt;/button&gt;
     `</span>
       })
-      <span class="keyword">export class</span> <span class="method">ChartComponent</span> <span class="keyword">implements</span> AfterViewInit, AfterViewChecked, OnDestroy {
-      <span class="decorator">@ViewChild</span>(<span class="string">'chartCanvas'</span>, { static: <span class="keyword">false</span> })
+      <span class="keyword">export class</span> <span class="method">ChartComponent</span> <span class="keyword">implements</span>
+      AfterViewInit, AfterViewChecked, OnDestroy {
+      <span class="decorator">@ViewChild</span>(<span class="string">'chartCanvas'</span>, { static: <span
+      class="keyword">false</span> })
       <span class="property">canvas</span>: ElementRef&lt;HTMLCanvasElement&gt;;
 
       <span class="decorator">@ViewChild</span>(LegendComponent)
@@ -795,13 +835,16 @@
       <span class="comment">// Be careful - this runs frequently!</span>
 
       <span class="comment">// Example: Adjust layout after view updates</span>
-      <span class="keyword">if</span> (<span class="keyword">this</span>.<span class="method">shouldAdjustLayout</span>()) {
+      <span class="keyword">if</span> (<span class="keyword">this</span>.<span class="method">shouldAdjustLayout</span>())
+      {
       <span class="keyword">this</span>.<span class="method">adjustChartLayout</span>();
       }
       }
 
-      <span class="keyword">private</span> <span class="method">initializeChart</span>(): <span class="keyword">void</span> {
-      <span class="keyword">const</span> ctx = <span class="keyword">this</span>.canvas.nativeElement.getContext(<span class="string">'2d'</span>);
+      <span class="keyword">private</span> <span class="method">initializeChart</span>(): <span
+      class="keyword">void</span> {
+      <span class="keyword">const</span> ctx = <span class="keyword">this</span>.canvas.nativeElement.getContext(<span
+      class="string">'2d'</span>);
 
       <span class="comment">// Initialize third-party chart library</span>
       <span class="comment">// This MUST be done after view init when canvas exists</span>
@@ -814,7 +857,8 @@
 
       <span class="method">updateChart</span>(): <span class="keyword">void</span> {
       <span class="comment">// This will trigger ngAfterViewChecked</span>
-      <span class="keyword">this</span>.chartData = [...<span class="keyword">this</span>.chartData, Math.random() * 100];
+      <span class="keyword">this</span>.chartData = [...<span class="keyword">this</span>.chartData, Math.random() *
+      100];
       <span class="keyword">if</span> (<span class="keyword">this</span>.chart) {
       <span class="keyword">this</span>.chart.update();
       }
@@ -833,7 +877,8 @@
     </div>
 
     <div class="warning-box">
-      <strong>⚠️ ExpressionChangedAfterItHasBeenCheckedError:</strong> Don't change component properties that affect the template in ngAfterViewInit or ngAfterViewChecked. This causes the infamous "Expression has changed" error!
+      <strong>⚠️ ExpressionChangedAfterItHasBeenCheckedError:</strong> Don't change component properties that affect the
+      template in ngAfterViewInit or ngAfterViewChecked. This causes the infamous "Expression has changed" error!
     </div>
   </div>
 
@@ -868,19 +913,24 @@
       <span class="property">selector</span>: <span class="string">'app-dashboard'</span>,
       <span class="property">template</span>: <span class="string">`...`</span>
       })
-      <span class="keyword">export class</span> <span class="method">DashboardComponent</span> <span class="keyword">implements</span> OnInit, OnDestroy {
+      <span class="keyword">export class</span> <span class="method">DashboardComponent</span> <span class="keyword">implements</span>
+      OnInit, OnDestroy {
       <span class="comment">// Subscriptions</span>
       <span class="keyword">private</span> <span class="property">dataSubscription</span>: Subscription;
       <span class="keyword">private</span> <span class="property">routeSubscription</span>: Subscription;
-      <span class="keyword">private</span> <span class="property">destroy$</span> = <span class="keyword">new</span> Subject&lt;<span class="keyword">void</span>&gt;();
+      <span class="keyword">private</span> <span class="property">destroy$</span> = <span class="keyword">new</span>
+      Subject&lt;<span class="keyword">void</span>&gt;();
 
       <span class="comment">// Timers</span>
       <span class="keyword">private</span> <span class="property">refreshTimer</span>: any;
-      <span class="keyword">private</span> <span class="property">animationFrame</span>: <span class="keyword">number</span>;
+      <span class="keyword">private</span> <span class="property">animationFrame</span>: <span
+      class="keyword">number</span>;
 
       <span class="comment">// Event listeners</span>
-      <span class="keyword">private</span> <span class="property">resizeHandler</span> = <span class="keyword">this</span>.<span class="method">onResize</span>.bind(<span class="keyword">this</span>);
-      <span class="keyword">private</span> <span class="property">documentClickHandler</span> = <span class="keyword">this</span>.<span class="method">onDocumentClick</span>.bind(<span class="keyword">this</span>);
+      <span class="keyword">private</span> <span class="property">resizeHandler</span> = <span
+      class="keyword">this</span>.<span class="method">onResize</span>.bind(<span class="keyword">this</span>);
+      <span class="keyword">private</span> <span class="property">documentClickHandler</span> = <span class="keyword">this</span>.<span
+      class="method">onDocumentClick</span>.bind(<span class="keyword">this</span>);
 
       <span class="comment">// External resources</span>
       <span class="keyword">private</span> <span class="property">websocket</span>: WebSocket;
@@ -918,7 +968,8 @@
       <span class="keyword">this</span>.websocket = <span class="keyword">new</span> WebSocket(<span class="string">'ws://localhost:8080'</span>);
 
       <span class="comment">// 7. Setup Web Worker</span>
-      <span class="keyword">if</span> (<span class="keyword">typeof</span> Worker !== <span class="string">'undefined'</span>) {
+      <span class="keyword">if</span> (<span class="keyword">typeof</span> Worker !== <span
+      class="string">'undefined'</span>) {
       <span class="keyword">this</span>.worker = <span class="keyword">new</span> Worker(<span class="string">'./data.worker'</span>);
       <span class="keyword">this</span>.worker.onmessage = ({ data }) => {
       console.log(data);
@@ -980,18 +1031,21 @@
       });
       }
 
-      <span class="keyword">private</span> <span class="method">onResize</span>(event: Event): <span class="keyword">void</span> {
+      <span class="keyword">private</span> <span class="method">onResize</span>(event: Event): <span class="keyword">void</span>
+      {
       console.log(<span class="string">'Window resized'</span>);
       }
 
-      <span class="keyword">private</span> <span class="method">onDocumentClick</span>(event: MouseEvent): <span class="keyword">void</span> {
+      <span class="keyword">private</span> <span class="method">onDocumentClick</span>(event: MouseEvent): <span
+      class="keyword">void</span> {
       console.log(<span class="string">'Document clicked'</span>);
       }
       }
     </div>
 
     <div class="success-box">
-      <strong>✅ Memory Leak Prevention:</strong> Always clean up in ngOnDestroy! Unsubscribe from observables, clear timers, remove event listeners, and close connections to prevent memory leaks.
+      <strong>✅ Memory Leak Prevention:</strong> Always clean up in ngOnDestroy! Unsubscribe from observables, clear
+      timers, remove event listeners, and close connections to prevent memory leaks.
     </div>
   </div>
 
@@ -1002,8 +1056,10 @@
     <h3>Pattern 1: Safe Subscription Management</h3>
     <div class="code-example">
       <span class="comment">// Using takeUntil pattern</span>
-      <span class="keyword">export class</span> <span class="method">SafeComponent</span> <span class="keyword">implements</span> OnInit, OnDestroy {
-      <span class="keyword">private</span> <span class="property">destroy$</span> = <span class="keyword">new</span> Subject&lt;<span class="keyword">void</span>&gt;();
+      <span class="keyword">export class</span> <span class="method">SafeComponent</span> <span class="keyword">implements</span>
+      OnInit, OnDestroy {
+      <span class="keyword">private</span> <span class="property">destroy$</span> = <span class="keyword">new</span>
+      Subject&lt;<span class="keyword">void</span>&gt;();
 
       <span class="method">ngOnInit</span>(): <span class="keyword">void</span> {
       <span class="comment">// All subscriptions use takeUntil</span>
@@ -1025,10 +1081,12 @@
 
     <h3>Pattern 2: Loading Data with Error Handling</h3>
     <div class="code-example">
-      <span class="keyword">export class</span> <span class="method">DataComponent</span> <span class="keyword">implements</span> OnInit {
+      <span class="keyword">export class</span> <span class="method">DataComponent</span> <span class="keyword">implements</span>
+      OnInit {
       <span class="property">data$</span>: Observable&lt;Data&gt;;
       <span class="property">loading</span> = <span class="keyword">true</span>;
-      <span class="property">error</span>: <span class="keyword">string</span> | <span class="keyword">null</span> = <span class="keyword">null</span>;
+      <span class="property">error</span>: <span class="keyword">string</span> | <span class="keyword">null</span> =
+      <span class="keyword">null</span>;
 
       <span class="method">ngOnInit</span>(): <span class="keyword">void</span> {
       <span class="keyword">this</span>.data$ = <span class="keyword">this</span>.service.loadData().pipe(
@@ -1048,7 +1106,8 @@
     <h3>Pattern 3: Parent-Child Communication</h3>
     <div class="code-example">
       <span class="comment">// Parent Component</span>
-      <span class="keyword">export class</span> <span class="method">ParentComponent</span> <span class="keyword">implements</span> AfterViewInit {
+      <span class="keyword">export class</span> <span class="method">ParentComponent</span> <span class="keyword">implements</span>
+      AfterViewInit {
       <span class="decorator">@ViewChild</span>(ChildComponent) <span class="property">child</span>: ChildComponent;
 
       <span class="method">ngAfterViewInit</span>(): <span class="keyword">void</span> {
@@ -1058,12 +1117,15 @@
       }
 
       <span class="comment">// Child Component</span>
-      <span class="keyword">export class</span> <span class="method">ChildComponent</span> <span class="keyword">implements</span> OnChanges {
+      <span class="keyword">export class</span> <span class="method">ChildComponent</span> <span class="keyword">implements</span>
+      OnChanges {
       <span class="decorator">@Input()</span> <span class="property">data</span>: any;
-      <span class="decorator">@Output()</span> <span class="property">dataChange</span> = <span class="keyword">new</span> EventEmitter();
+      <span class="decorator">@Output()</span> <span class="property">dataChange</span> = <span
+      class="keyword">new</span> EventEmitter();
 
       <span class="method">ngOnChanges</span>(changes: SimpleChanges): <span class="keyword">void</span> {
-      <span class="keyword">if</span> (changes[<span class="string">'data'</span>] && !changes[<span class="string">'data'</span>].firstChange) {
+      <span class="keyword">if</span> (changes[<span class="string">'data'</span>] && !changes[<span class="string">'data'</span>].firstChange)
+      {
       <span class="keyword">this</span>.<span class="method">processDataChange</span>(changes[<span class="string">'data'</span>].currentValue);
       }
       }
@@ -1114,14 +1176,17 @@
         &lt;/div&gt;
     `</span>
       })
-      <span class="keyword">export class</span> <span class="method">CompleteLifecycleComponent</span> <span class="keyword">implements</span>
+      <span class="keyword">export class</span> <span class="method">CompleteLifecycleComponent</span> <span
+      class="keyword">implements</span>
       OnChanges, OnInit, DoCheck,
       AfterContentInit, AfterContentChecked,
       AfterViewInit, AfterViewChecked, OnDestroy {
 
       <span class="decorator">@Input()</span> <span class="property">title</span>: <span class="keyword">string</span>;
-      <span class="decorator">@ContentChild</span>(<span class="string">'content'</span>) <span class="property">content</span>: ElementRef;
-      <span class="decorator">@ViewChild</span>(<span class="string">'viewChild'</span>) <span class="property">viewChild</span>: ElementRef;
+      <span class="decorator">@ContentChild</span>(<span class="string">'content'</span>) <span
+      class="property">content</span>: ElementRef;
+      <span class="decorator">@ViewChild</span>(<span class="string">'viewChild'</span>) <span class="property">viewChild</span>:
+      ElementRef;
 
       <span class="keyword">private</span> <span class="property">counter</span> = 0;
 
@@ -1184,14 +1249,18 @@
       <h3>❌ Mistake 1: Complex Logic in Constructor</h3>
       <div class="code-example">
         <span class="comment">// WRONG - Don't do this!</span>
-        <span class="keyword">constructor</span>(<span class="keyword">private</span> <span class="property">http</span>: HttpClient) {
-        <span class="keyword">this</span>.http.get(<span class="string">'/api/data'</span>).subscribe(); <span class="comment">// ❌ HTTP in constructor</span>
-        console.log(<span class="keyword">this</span>.inputValue); <span class="comment">// ❌ undefined - inputs not set</span>
+        <span class="keyword">constructor</span>(<span class="keyword">private</span> <span class="property">http</span>:
+        HttpClient) {
+        <span class="keyword">this</span>.http.get(<span class="string">'/api/data'</span>).subscribe(); <span
+        class="comment">// ❌ HTTP in constructor</span>
+        console.log(<span class="keyword">this</span>.inputValue); <span
+        class="comment">// ❌ undefined - inputs not set</span>
         }
 
         <span class="comment">// CORRECT - Use ngOnInit</span>
         <span class="method">ngOnInit</span>(): <span class="keyword">void</span> {
-        <span class="keyword">this</span>.http.get(<span class="string">'/api/data'</span>).subscribe(); <span class="comment">// ✅</span>
+        <span class="keyword">this</span>.http.get(<span class="string">'/api/data'</span>).subscribe(); <span
+        class="comment">// ✅</span>
         console.log(<span class="keyword">this</span>.inputValue); <span class="comment">// ✅ Has value</span>
         }
       </div>
@@ -1211,7 +1280,8 @@
         <span class="keyword">private</span> <span class="property">subscription</span>: Subscription;
 
         <span class="method">ngOnInit</span>(): <span class="keyword">void</span> {
-        <span class="keyword">this</span>.subscription = <span class="keyword">this</span>.service.data$.subscribe(data => {
+        <span class="keyword">this</span>.subscription = <span class="keyword">this</span>.service.data$.subscribe(data
+        => {
         <span class="keyword">this</span>.data = data;
         });
         }
@@ -1250,7 +1320,8 @@
         <span class="comment">// WRONG - Performance killer!</span>
         <span class="method">ngDoCheck</span>(): <span class="keyword">void</span> {
         <span class="comment">// ❌ This runs on EVERY change detection!</span>
-        <span class="keyword">this</span>.expensiveCalculation = <span class="keyword">this</span>.items.reduce((sum, item) => {
+        <span class="keyword">this</span>.expensiveCalculation = <span class="keyword">this</span>.items.reduce((sum,
+        item) => {
         <span class="keyword">return</span> sum + <span class="keyword">this</span>.complexComputation(item);
         }, 0);
         }
@@ -1261,7 +1332,8 @@
 
         <span class="method">ngDoCheck</span>(): <span class="keyword">void</span> {
         <span class="comment">// ✅ Only recalculate when items actually change</span>
-        <span class="keyword">if</span> (<span class="keyword">this</span>.items.length !== <span class="keyword">this</span>.lastItemsLength) {
+        <span class="keyword">if</span> (<span class="keyword">this</span>.items.length !== <span
+        class="keyword">this</span>.lastItemsLength) {
         <span class="keyword">this</span>.lastItemsLength = <span class="keyword">this</span>.items.length;
         <span class="keyword">this</span>.cachedResult = <span class="keyword">this</span>.calculateExpensive();
         }
@@ -1284,7 +1356,8 @@
 
         <span class="comment">// For ContentChild, use ngAfterContentInit</span>
         <span class="method">ngAfterContentInit</span>(): <span class="keyword">void</span> {
-        <span class="keyword">this</span>.contentChild.doSomething(); <span class="comment">// ✅ ContentChild is ready</span>
+        <span class="keyword">this</span>.contentChild.doSomething(); <span
+        class="comment">// ✅ ContentChild is ready</span>
         }
       </div>
     </div>
@@ -1304,7 +1377,8 @@
       <span class="keyword">export class</span> <span class="method">OptimizedComponent</span> {
       <span class="decorator">@Input()</span> <span class="property">data</span>: any;
 
-      <span class="keyword">constructor</span>(<span class="keyword">private</span> <span class="property">cd</span>: ChangeDetectorRef) {}
+      <span class="keyword">constructor</span>(<span class="keyword">private</span> <span class="property">cd</span>:
+      ChangeDetectorRef) {}
 
       <span class="method">updateData</span>(): <span class="keyword">void</span> {
       <span class="comment">// Manually trigger change detection when needed</span>
@@ -1325,7 +1399,8 @@
 
       <span class="comment">// Component</span>
       <span class="method">trackByFn</span>(index: <span class="keyword">number</span>, item: any): any {
-      <span class="keyword">return</span> item.id; <span class="comment">// ✅ Prevents unnecessary DOM recreations</span>
+      <span class="keyword">return</span> item.id; <span
+      class="comment">// ✅ Prevents unnecessary DOM recreations</span>
       }
     </div>
 
@@ -1337,7 +1412,8 @@
       <span class="method">ngOnDestroy</span>() { <span class="keyword">this</span>.sub?.unsubscribe(); }
 
       <span class="comment">// Pattern 2: TakeUntil</span>
-      <span class="keyword">private</span> <span class="property">destroy$</span> = <span class="keyword">new</span> Subject();
+      <span class="keyword">private</span> <span class="property">destroy$</span> = <span class="keyword">new</span>
+      Subject();
       <span class="method">ngOnInit</span>() {
       observable.pipe(takeUntil(<span class="keyword">this</span>.destroy$)).subscribe();
       }
@@ -1363,7 +1439,8 @@
       <span class="keyword">let</span> service: jasmine.SpyObj&lt;DataService&gt;;
 
       beforeEach(() => {
-      <span class="keyword">const</span> spy = jasmine.createSpyObj(<span class="string">'DataService'</span>, [<span class="string">'getData'</span>]);
+      <span class="keyword">const</span> spy = jasmine.createSpyObj(<span class="string">'DataService'</span>, [<span
+      class="string">'getData'</span>]);
 
       TestBed.configureTestingModule({
       declarations: [LifecycleComponent],
@@ -1452,11 +1529,13 @@
     <div class="code-example">
       <span class="comment">// OLD: Class-based with lifecycle hooks</span>
       <span class="decorator">@Component</span>({...})
-      <span class="keyword">export class</span> <span class="method">OldComponent</span> <span class="keyword">implements</span> OnInit, OnDestroy {
+      <span class="keyword">export class</span> <span class="method">OldComponent</span> <span class="keyword">implements</span>
+      OnInit, OnDestroy {
       <span class="decorator">@Input()</span> <span class="property">data</span>: string;
       <span class="keyword">private</span> <span class="property">subscription</span>: Subscription;
 
-      <span class="keyword">constructor</span>(<span class="keyword">private</span> <span class="property">service</span>: DataService) {}
+      <span class="keyword">constructor</span>(<span class="keyword">private</span> <span
+      class="property">service</span>: DataService) {}
 
       <span class="method">ngOnInit</span>() {
       <span class="keyword">this</span>.subscription = <span class="keyword">this</span>.service.getData().subscribe();
