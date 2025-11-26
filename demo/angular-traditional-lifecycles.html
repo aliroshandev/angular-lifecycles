@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angular Traditional Lifecycle Hooks - Complete Guide</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+
+      body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          min-height: 100vh;
+          padding: 20px;
+      }
+
+      .header {
+          text-align: center;
+          color: white;
+          padding: 40px 20px;
+          animation: fadeIn 1s ease-in;
+      }
+
+      .header h1 {
+          font-size: 3em;
+          margin-bottom: 10px;
+          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .header p {
+          font-size: 1.2em;
+          opacity: 0.9;
+      }
+
+      .container {
+          max-width: 1800px;
+          margin: 0 auto;
+      }
+
+      .section {
+          background: white;
+          border-radius: 20px;
+          padding: 30px;
+          margin-bottom: 30px;
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+          animation: slideUp 0.6s ease-out;
+      }
+
+      .section h2 {
+          color: #667eea;
+          border-bottom: 3px solid #764ba2;
+          padding-bottom: 15px;
+          margin-bottom: 25px;
+          font-size: 2em;
+      }
+
+      .section h3 {
+          color: #764ba2;
+          margin: 20px 0 15px 0;
+          font-size: 1.4em;
+      }
+
+      .mermaid {
+          background: #f8f9fa;
+          padding: 30px;
+          border-radius: 12px;
+          margin: 25px 0;
+          border: 1px solid #e9ecef;
+          overflow-x: auto;
+      }
+
+      .code-example {
+          background: #1e1e1e;
+          color: #d4d4d4;
+          padding: 25px;
+          border-radius: 12px;
+          margin: 20px 0;
+          overflow-x: auto;
+          font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+          font-size: 14px;
+          line-height: 1.6;
+      }
+
+      .keyword { color: #569cd6; }
+      .string { color: #ce9178; }
+      .comment { color: #6a9955; }
+      .decorator { color: #d4d400; }
+      .method { color: #dcdcaa; }
+      .property { color: #9cdcfe; }
+
+      .info-box {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          padding: 20px;
+          border-radius: 12px;
+          margin: 20px 0;
+      }
+
+      .warning-box {
+          background: #fff3cd;
+          border-left: 5px solid #ffc107;
+          padding: 20px;
+          margin: 20px 0;
+          border-radius: 0 8px 8px 0;
+      }
+
+      .success-box {
+          background: #d4edda;
+          border-left: 5px solid #28a745;
+          padding: 20px;
+          margin: 20px 0;
+          border-radius: 0 8px 8px 0;
+      }
+
+      .error-box {
+          background: #f8d7da;
+          border-left: 5px solid #dc3545;
+          padding: 20px;
+          margin: 20px 0;
+          border-radius: 0 8px 8px 0;
+      }
+
+      .lifecycle-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 20px 0;
+      }
+
+      .lifecycle-table th {
+          background: #667eea;
+          color: white;
+          padding: 12px;
+          text-align: left;
+      }
+
+      .lifecycle-table td {
+          padding: 12px;
+          border-bottom: 1px solid #dee2e6;
+      }
+
+      .lifecycle-table tr:hover {
+          background: #f8f9fa;
+      }
+
+      @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+      }
+
+      @keyframes slideUp {
+          from {
+              opacity: 0;
+              transform: translateY(30px);
+          }
+          to {
+              opacity: 1;
+              transform: translateY(0);
+          }
+      }
+
+      .badge {
+          display: inline-block;
+          padding: 5px 12px;
+          background: #764ba2;
+          color: white;
+          border-radius: 20px;
+          font-size: 0.9em;
+          margin: 0 5px;
+      }
+
+      .navigation {
+          background: white;
+          padding: 20px;
+          border-radius: 12px;
+          margin-bottom: 30px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .navigation a {
+          color: #667eea;
+          text-decoration: none;
+          margin: 0 15px;
+          font-weight: 500;
+      }
+
+      .navigation a:hover {
+          color: #764ba2;
+          text-decoration: underline;
+      }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🎯 Angular Traditional Lifecycle Hooks</h1>
+  <p>Complete Guide to All 8 Lifecycle Hooks with Examples</p>
+  <div style="margin-top: 20px;">
+    <span class="badge">Angular 2-18</span>
+    <span class="badge">Class Components</span>
+    <span class="badge">Still Valid in v21</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Navigation -->
+  <div class="navigation">
+    <div>
+      <a href="/">Back to see Angular Lifecycles</a>
+    </div>
+    <div>
+      <a href="angular-di-injection-context.html">DI & Injection Context</a>
+    </div>
+  </div>
+
+  <!-- Section 1: Complete Lifecycle Overview -->
+  <div class="section">
+    <h2>1. Complete Lifecycle Hooks Flow</h2>
+
+    <div class="mermaid">
+      graph TD
+      A[Component Class Instantiated] --> B[Constructor]
+      B --> C[Input Properties Assigned]
+      C --> D[ngOnChanges - First Call]
+      D --> E[ngOnInit]
+      E --> F[ngDoCheck]
+      F --> G[ngAfterContentInit]
+      G --> H[ngAfterContentChecked]
+      H --> I[ngAfterViewInit]
+      I --> J[ngAfterViewChecked]
+      J --> K[Component Ready]
+
+      K --> L{Change Detection?}
+      L -->|Input Changed| M[ngOnChanges]
+      L -->|Any Change| N[ngDoCheck]
+
+      M --> O[ngAfterContentChecked]
+      N --> O
+      O --> P[ngAfterViewChecked]
+      P --> L
+
+      K --> Q{Destroy Component?}
+      Q -->|Yes| R[ngOnDestroy]
+      R --> S[Component Destroyed]
+      Q -->|No| L
+    </div>
+
+    <div class="info-box">
+      <strong>💡 Key Point:</strong> Lifecycle hooks execute in a specific order. Understanding this order is crucial for proper component initialization and cleanup.
+    </div>
+  </div>
+
+  <!-- Section 2: Hook Details Table -->
+  <div class="section">
+    <h2>2. Lifecycle Hooks Quick Reference</h2>
+
+    <table class="lifecycle-table">
+      <thead>
+      <tr>
+        <th>Hook</th>
+        <th>Purpose</th>
+        <th>Timing</th>
+        <th>Usage</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td><strong>constructor()</strong></td>
+        <td>Dependency injection, simple initializations</td>
+        <td>First - when class instantiated</td>
+        <td>DI only, avoid complex logic</td>
+      </tr>
+      <tr>
+        <td><strong>ngOnChanges()</strong></td>
+        <td>Respond to input property changes</td>
+        <td>Before ngOnInit & when inputs change</td>
+        <td>Input validation, react to changes</td>
+      </tr>
+      <tr>
+        <td><strong>ngOnInit()</strong></td>
+        <td>Component initialization after inputs set</td>
+        <td>Once, after first ngOnChanges</td>
+        <td>Fetch data, setup subscriptions</td>
+      </tr>
+      <tr>
+        <td><strong>ngDoCheck()</strong></td>
+        <td>Custom change detection</td>
+        <td>Every change detection cycle</td>
+        <td>Manual change detection logic</td>
+      </tr>
+      <tr>
+        <td><strong>ngAfterContentInit()</strong></td>
+        <td>After content projection</td>
+        <td>Once, after content initialized</td>
+        <td>Access @ContentChild queries</td>
+      </tr>
+      <tr>
+        <td><strong>ngAfterContentChecked()</strong></td>
+        <td>After content checked</td>
+        <td>After every change detection</td>
+        <td>Respond to content changes</td>
+      </tr>
+      <tr>
+        <td><strong>ngAfterViewInit()</strong></td>
+        <td>After view initialized</td>
+        <td>Once, after view ready</td>
+        <td>Access @ViewChild, DOM manipulation</td>
+      </tr>
+      <tr>
+        <td><strong>ngAfterViewChecked()</strong></td>
+        <td>After view checked</td>
+        <td>After every change detection</td>
+        <td>Respond to view changes</td>
+      </tr>
+      <tr>
+        <td><strong>ngOnDestroy()</strong></td>
+        <td>Cleanup before destruction</td>
+        <td>Once, before removal</td>
+        <td>Unsubscribe, clear timers</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Section 3: ngOnChanges Deep Dive -->
+  <div class="section">
+    <h2>3. ngOnChanges() - Input Property Changes</h2>
+
+    <div class="mermaid">
+      graph TD
+      A[Parent Component] --> B[Passes Input to Child]
+      B --> C{First Time?}
+      C -->|Yes| D[ngOnChanges Called]
+      C -->|No| E{Input Value Changed?}
+
+      E -->|Yes| F[ngOnChanges Called]
+      E -->|No| G[No ngOnChanges]
+
+      D --> H[SimpleChanges Object]
+      F --> H
+
+      H --> I[Contains previousValue]
+      H --> J[Contains currentValue]
+      H --> K[Contains firstChange flag]
+
+      I --> L[Process Change]
+      J --> L
+      K --> L
+
+      L --> M[Component Updates]
+    </div>
+
+    <h3>Implementation Example:</h3>
+    <div class="code-example">
+      <span class="decorator">@Component</span>({
+      <span class="property">selector</span>: <span class="string">'app-user-detail'</span>,
+      <span class="property">template</span>: <span class="string">`
+        &lt;div class="user-card"&gt;
+            &lt;h3&gt;{{ user?.name }}&lt;/h3&gt;
+            &lt;p&gt;Age: {{ user?.age }}&lt;/p&gt;
+            &lt;p&gt;Status: {{ status }}&lt;/p&gt;
+        &lt;/div&gt;
+    `</span>
+      })
+      <span class="keyword">export class</span> <span class="method">UserDetailComponent</span> <span class="keyword">implements</span> OnChanges {
+      <span class="decorator">@Input()</span> <span class="property">user</span>: User;
+      <span class="decorator">@Input()</span> <span class="property">status</span>: <span class="keyword">string</span>;
+
+      <span class="property">changeLog</span>: <span class="keyword">string</span>[] = [];
+
+      <span class="method">ngOnChanges</span>(changes: SimpleChanges): <span class="keyword">void</span> {
+      <span class="comment">// Called before ngOnInit() and whenever one or more inputs change</span>
+
+      <span class="keyword">for</span> (<span class="keyword">const</span> propName <span class="keyword">in</span> changes) {
+      <span class="keyword">const</span> change = changes[propName];
+      <span class="keyword">const</span> current = JSON.stringify(change.currentValue);
+      <span class="keyword">const</span> previous = JSON.stringify(change.previousValue);
+
+      <span class="keyword">if</span> (change.firstChange) {
+      console.log(<span class="string">`Initial value of ${propName} set to ${current}`</span>);
+      } <span class="keyword">else</span> {
+      console.log(<span class="string">`${propName} changed from ${previous} to ${current}`</span>);
+      }
+
+      <span class="comment">// React to specific changes</span>
+      <span class="keyword">if</span> (propName === <span class="string">'user'</span> && !change.firstChange) {
+      <span class="keyword">this</span>.<span class="method">validateUser</span>(change.currentValue);
+      }
+      }
+      }
+
+      <span class="keyword">private</span> <span class="method">validateUser</span>(user: User): <span class="keyword">void</span> {
+      <span class="comment">// Validation logic</span>
+      <span class="keyword">if</span> (user.age < 0) {
+      console.warn(<span class="string">'Invalid age detected!'</span>);
+      }
+      }
+      }
+    </div>
+
+    <div class="warning-box">
+      <strong>⚠️ Important:</strong> ngOnChanges only detects changes to primitive input values and object references. It won't detect mutations within objects or arrays.
+    </div>
+  </div>
+
+  <!-- Section 4: ngOnInit Deep Dive -->
+  <div class="section">
+    <h2>4. ngOnInit() - Component Initialization</h2>
+
+    <div class="mermaid">
+      graph TD
+      A[Component Constructor] --> B[DI Complete]
+      B --> C[Input Properties Set]
+      C --> D[First ngOnChanges]
+      D --> E[ngOnInit Called Once]
+
+      E --> F[Initialize Component State]
+      E --> G[Fetch Initial Data]
+      E --> H[Setup Subscriptions]
+      E --> I[Initialize Forms]
+
+      F --> J[Component Ready]
+      G --> J
+      H --> J
+      I --> J
+
+      J --> K[Continue Lifecycle]
+    </div>
+
+    <h3>Implementation Example:</h3>
+    <div class="code-example">
+      <span class="decorator">@Component</span>({
+      <span class="property">selector</span>: <span class="string">'app-user-list'</span>,
+      <span class="property">template</span>: <span class="string">`
+        &lt;div class="user-list"&gt;
+            &lt;div *ngIf="loading"&gt;Loading...&lt;/div&gt;
+            &lt;div *ngFor="let user of users"&gt;
+                {{ user.name }} - {{ user.email }}
+            &lt;/div&gt;
+        &lt;/div&gt;
+    `</span>
+      })
+      <span class="keyword">export class</span> <span class="method">UserListComponent</span> <span class="keyword">implements</span> OnInit, OnDestroy {
+      <span class="decorator">@Input()</span> <span class="property">department</span>: <span class="keyword">string</span>;
+
+      <span class="property">users</span>: User[] = [];
+      <span class="property">loading</span> = <span class="keyword">false</span>;
+      <span class="keyword">private</span> <span class="property">subscription</span>: Subscription;
+
+      <span class="keyword">constructor</span>(
+      <span class="keyword">private</span> <span class="property">userService</span>: UserService,
+      <span class="keyword">private</span> <span class="property">http</span>: HttpClient,
+      <span class="keyword">private</span> <span class="property">route</span>: ActivatedRoute
+      ) {
+      <span class="comment">// Constructor: Only for DI</span>
+      <span class="comment">// DON'T: Make HTTP calls here</span>
+      <span class="comment">// DON'T: Access @Input properties (not set yet)</span>
+      console.log(<span class="string">'Constructor: department is'</span>, <span class="keyword">this</span>.department); <span class="comment">// undefined!</span>
+      }
+
+      <span class="method">ngOnInit</span>(): <span class="keyword">void</span> {
+      <span class="comment">// Called once after inputs are set</span>
+      <span class="comment">// DO: Component initialization logic</span>
+      <span class="comment">// DO: HTTP requests</span>
+      <span class="comment">// DO: Setup subscriptions</span>
+
+      console.log(<span class="string">'ngOnInit: department is'</span>, <span class="keyword">this</span>.department); <span class="comment">// Has value!</span>
+
+      <span class="comment">// 1. Get route params</span>
+      <span class="keyword">const</span> id = <span class="keyword">this</span>.route.snapshot.paramMap.get(<span class="string">'id'</span>);
+
+      <span class="comment">// 2. Initialize component state</span>
+      <span class="keyword">this</span>.loading = <span class="keyword">true</span>;
+
+      <span class="comment">// 3. Fetch initial data</span>
+      <span class="keyword">this</span>.<span class="method">loadUsers</span>();
+
+      <span class="comment">// 4. Setup subscriptions</span>
+      <span class="keyword">this</span>.subscription = <span class="keyword">this</span>.userService.userUpdates$
+      .subscribe(update => {
+      console.log(<span class="string">'User update received:'</span>, update);
+      <span class="keyword">this</span>.<span class="method">handleUserUpdate</span>(update);
+      });
+      }
+
+      <span class="keyword">private</span> <span class="method">loadUsers</span>(): <span class="keyword">void</span> {
+      <span class="keyword">this</span>.userService.getUsers(<span class="keyword">this</span>.department)
+      .subscribe({
+      next: (users) => {
+      <span class="keyword">this</span>.users = users;
+      <span class="keyword">this</span>.loading = <span class="keyword">false</span>;
+      },
+      error: (error) => {
+      console.error(<span class="string">'Failed to load users:'</span>, error);
+      <span class="keyword">this</span>.loading = <span class="keyword">false</span>;
+      }
+      });
+      }
+
+      <span class="method">ngOnDestroy</span>(): <span class="keyword">void</span> {
+      <span class="comment">// Clean up subscriptions</span>
+      <span class="keyword">if</span> (<span class="keyword">this</span>.subscription) {
+      <span class="keyword">this</span>.subscription.unsubscribe();
+      }
+      }
+      }
+    </div>
+
+    <div class="success-box">
+      <strong>✅ Best Practice:</strong> Use ngOnInit for component initialization logic, not the constructor. The constructor should only be used for dependency injection.
+    </div>
+  </div>
+
+  <!-- Section 5: ngDoCheck Deep Dive -->
+  <div class="section">
+    <h2>5. ngDoCheck() - Custom Change Detection</h2>
+
+    <div class="mermaid">
+      graph TD
+      A[Change Detection Cycle] --> B[ngDoCheck Called]
+      B --> C{Custom Check Needed?}
+
+      C -->|Yes| D[Check for Changes]
+      D --> E{Changes Detected?}
+
+      E -->|Yes| F[Update Component State]
+      E -->|No| G[Skip Update]
+
+      F --> H[Trigger Updates]
+      G --> I[Continue Lifecycle]
+      H --> I
+
+      I --> J[ngAfterContentChecked]
+      J --> K[ngAfterViewChecked]
+
+      B --> L[⚠️ Called Very Frequently]
+      L --> M[Performance Impact]
+    </div>
+
+    <h3>Implementation Example:</h3>
+    <div class="code-example">
+      <span class="decorator">@Component</span>({
+      <span class="property">selector</span>: <span class="string">'app-differ-check'</span>,
+      <span class="property">template</span>: <span class="string">`
+        &lt;div&gt;
+            &lt;h3&gt;Array Changes: {{ arrayChangeCount }}&lt;/h3&gt;
+            &lt;div *ngFor="let item of items"&gt;
+                {{ item.name }} - {{ item.value }}
+            &lt;/div&gt;
+        &lt;/div&gt;
+    `</span>
+      })
+      <span class="keyword">export class</span> <span class="method">DifferCheckComponent</span> <span class="keyword">implements</span> DoCheck, OnInit {
+      <span class="decorator">@Input()</span> <span class="property">items</span>: any[] = [];
+
+      <span class="property">arrayChangeCount</span> = 0;
+      <span class="keyword">private</span> <span class="property">differ</span>: IterableDiffer&lt;any&gt;;
+      <span class="keyword">private</span> <span class="property">oldLength</span> = 0;
+
+      <span class="keyword">constructor</span>(<span class="keyword">private</span> <span class="property">iterableDiffers</span>: IterableDiffers) {}
+
+      <span class="method">ngOnInit</span>(): <span class="keyword">void</span> {
+      <span class="comment">// Create a differ to track array changes</span>
+      <span class="keyword">this</span>.differ = <span class="keyword">this</span>.iterableDiffers.find(<span class="keyword">this</span>.items).create();
+      }
+
+      <span class="method">ngDoCheck</span>(): <span class="keyword">void</span> {
+      <span class="comment">// Called on every change detection run</span>
+      <span class="comment">// Use for custom change detection logic</span>
+
+      <span class="comment">// Example 1: Detect array mutations</span>
+      <span class="keyword">if</span> (<span class="keyword">this</span>.differ) {
+      <span class="keyword">const</span> changes = <span class="keyword">this</span>.differ.diff(<span class="keyword">this</span>.items);
+      <span class="keyword">if</span> (changes) {
+      <span class="keyword">this</span>.arrayChangeCount++;
+      changes.forEachAddedItem(record => {
+      console.log(<span class="string">'Added:'</span>, record.item);
+      });
+      changes.forEachRemovedItem(record => {
+      console.log(<span class="string">'Removed:'</span>, record.item);
+      });
+      }
+      }
+
+      <span class="comment">// Example 2: Manual deep object checking</span>
+      <span class="keyword">if</span> (<span class="keyword">this</span>.items.length !== <span class="keyword">this</span>.oldLength) {
+      console.log(<span class="string">`Length changed from ${this.oldLength} to ${this.items.length}`</span>);
+      <span class="keyword">this</span>.oldLength = <span class="keyword">this</span>.items.length;
+      }
+
+      <span class="comment">// WARNING: Be careful with performance!</span>
+      <span class="comment">// This runs VERY frequently</span>
+      }
+      }
+    </div>
+
+    <div class="error-box">
+      <strong>🚨 Performance Warning:</strong> ngDoCheck is called very frequently - on every change detection cycle. Avoid heavy computations here or your app will become sluggish!
+    </div>
+  </div>
+
+  <!-- Section 6: Content Projection Hooks -->
+  <div class="section">
+    <h2>6. Content Projection Hooks</h2>
+
+    <div class="mermaid">
+      graph TD
+      A[Parent Component Template] --> B[ng-content Projection]
+      B --> C[Child Component]
+
+      C --> D[ngAfterContentInit]
+      D --> E[@ContentChild Available]
+      D --> F[@ContentChildren Available]
+
+      E --> G[Access Projected Content]
+      F --> G
+
+      G --> H[Component Renders]
+
+      H --> I[Change Detection]
+      I --> J[ngAfterContentChecked]
+      J --> K{Content Changed?}
+
+      K -->|Yes| L[Handle Change]
+      K -->|No| M[Skip]
+
+      L --> I
+      M --> N[Continue]
+    </div>
+
+    <h3>Implementation Example:</h3>
+    <div class="code-example">
+      <span class="comment">// Parent Component Template</span>
+      <span class="decorator">@Component</span>({
+      <span class="property">selector</span>: <span class="string">'app-parent'</span>,
+      <span class="property">template</span>: <span class="string">`
+        &lt;app-tabs&gt;
+            &lt;app-tab title="First" #firstTab&gt;First Content&lt;/app-tab&gt;
+            &lt;app-tab title="Second"&gt;Second Content&lt;/app-tab&gt;
+            &lt;app-tab title="Third"&gt;Third Content&lt;/app-tab&gt;
+        &lt;/app-tabs&gt;
+    `</span>
+      })
+      <span class="keyword">export class</span> <span class="method">ParentComponent</span> {}
+
+      <span class="comment">// Tab Component</span>
+      <span class="decorator">@Component</span>({
+      <span class="property">selector</span>: <span class="string">'app-tab'</span>,
+      <span class="property">template</span>: <span class="string">`&lt;div&gt;&lt;ng-content&gt;&lt;/ng-content&gt;&lt;/div&gt;`</span>
+      })
+      <span class="keyword">export class</span> <span class="method">TabComponent</span> {
+      <span class="decorator">@Input()</span> <span class="property">title</span>: <span class="keyword">string</span>;
+      <span class="property">active</span> = <span class="keyword">false</span>;
+      }
+
+      <span class="comment">// Tabs Container Component</span>
+      <span class="decorator">@Component</span>({
+      <span class="property">selector</span>: <span class="string">'app-tabs'</span>,
+      <span class="property">template</span>: <span class="string">`
+        &lt;div class="tabs"&gt;
+            &lt;div class="tab-headers"&gt;
+                &lt;button *ngFor="let tab of tabs" 
+                        (click)="selectTab(tab)"
+                        [class.active]="tab.active"&gt;
+                    {{ tab.title }}
+                &lt;/button&gt;
+            &lt;/div&gt;
+            &lt;div class="tab-content"&gt;
+                &lt;ng-content&gt;&lt;/ng-content&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    `</span>
+      })
+      <span class="keyword">export class</span> <span class="method">TabsComponent</span> <span class="keyword">implements</span> AfterContentInit, AfterContentChecked {
+      <span class="decorator">@ContentChildren</span>(TabComponent) <span class="property">tabs</span>: QueryList&lt;TabComponent&gt;;
+
+      <span class="method">ngAfterContentInit</span>(): <span class="keyword">void</span> {
+      <span class="comment">// Content children are set after the content has been projected</span>
+      console.log(<span class="string">`Found ${this.tabs.length} tabs`</span>);
+
+      <span class="comment">// Select first tab by default</span>
+      <span class="keyword">if</span> (<span class="keyword">this</span>.tabs.length > 0) {
+      <span class="keyword">this</span>.<span class="method">selectTab</span>(<span class="keyword">this</span>.tabs.first);
+      }
+
+      <span class="comment">// Subscribe to changes in content children</span>
+      <span class="keyword">this</span>.tabs.changes.subscribe(() => {
+      console.log(<span class="string">'Tabs changed!'</span>);
+      });
+      }
+
+      <span class="method">ngAfterContentChecked</span>(): <span class="keyword">void</span> {
+      <span class="comment">// Called after every change detection cycle</span>
+      <span class="comment">// that checks projected content</span>
+
+      <span class="comment">// Ensure one tab is always active</span>
+      <span class="keyword">const</span> activeTabs = <span class="keyword">this</span>.tabs.filter(tab => tab.active);
+      <span class="keyword">if</span> (activeTabs.length === 0 && <span class="keyword">this</span>.tabs.length > 0) {
+      <span class="keyword">this</span>.<span class="method">selectTab</span>(<span class="keyword">this</span>.tabs.first);
+      }
+      }
+
+      <span class="method">selectTab</span>(tab: TabComponent): <span class="keyword">void</span> {
+      <span class="comment">// Deactivate all tabs</span>
+      <span class="keyword">this</span>.tabs.forEach(t => t.active = <span class="keyword">false</span>);
+      <span class="comment">// Activate selected tab</span>
+      tab.active = <span class="keyword">true</span>;
+      }
+      }
+    </div>
+  </div>
+
+  <!-- Section 7: View Initialization Hooks -->
+  <div class="section">
+    <h2>7. View Initialization Hooks</h2>
+
+    <div class="mermaid">
+      graph TD
+      A[Component Template Rendered] --> B[View Created]
+      B --> C[ngAfterViewInit]
+
+      C --> D[@ViewChild Available]
+      C --> E[@ViewChildren Available]
+      C --> F[DOM Elements Ready]
+
+      D --> G[Access Child Components]
+      E --> G
+      F --> H[DOM Manipulation Safe]
+
+      G --> I[Initialize Third-party Libs]
+      H --> I
+
+      I --> J[View Complete]
+
+      J --> K[Change Detection]
+      K --> L[ngAfterViewChecked]
+
+      L --> M{View Changed?}
+      M -->|Yes| N[Handle View Change]
+      M -->|No| O[Continue]
+
+      N --> K
+    </div>
+
+    <h3>Implementation Example:</h3>
+    <div class="code-example">
+      <span class="decorator">@Component</span>({
+      <span class="property">selector</span>: <span class="string">'app-chart'</span>,
+      <span class="property">template</span>: <span class="string">`
+        &lt;div class="chart-container"&gt;
+            &lt;canvas #chartCanvas&gt;&lt;/canvas&gt;
+            &lt;app-legend #legend [data]="chartData"&gt;&lt;/app-legend&gt;
+        &lt;/div&gt;
+        &lt;button (click)="updateChart()"&gt;Update&lt;/button&gt;
+    `</span>
+      })
+      <span class="keyword">export class</span> <span class="method">ChartComponent</span> <span class="keyword">implements</span> AfterViewInit, AfterViewChecked, OnDestroy {
+      <span class="decorator">@ViewChild</span>(<span class="string">'chartCanvas'</span>, { static: <span class="keyword">false</span> })
+      <span class="property">canvas</span>: ElementRef&lt;HTMLCanvasElement&gt;;
+
+      <span class="decorator">@ViewChild</span>(LegendComponent)
+      <span class="property">legend</span>: LegendComponent;
+
+      <span class="property">chartData</span> = [];
+      <span class="keyword">private</span> <span class="property">chart</span>: any;
+      <span class="keyword">private</span> <span class="property">resizeObserver</span>: ResizeObserver;
+
+      <span class="method">ngAfterViewInit</span>(): <span class="keyword">void</span> {
+      <span class="comment">// Called once after view is initialized</span>
+      <span class="comment">// DOM elements and child components are available</span>
+
+      console.log(<span class="string">'Canvas element:'</span>, <span class="keyword">this</span>.canvas.nativeElement);
+      console.log(<span class="string">'Legend component:'</span>, <span class="keyword">this</span>.legend);
+
+      <span class="comment">// 1. Initialize chart library (requires DOM element)</span>
+      <span class="keyword">this</span>.<span class="method">initializeChart</span>();
+
+      <span class="comment">// 2. Setup ResizeObserver for responsive charts</span>
+      <span class="keyword">this</span>.resizeObserver = <span class="keyword">new</span> ResizeObserver(entries => {
+      <span class="keyword">this</span>.<span class="method">handleResize</span>(entries[0].contentRect);
+      });
+      <span class="keyword">this</span>.resizeObserver.observe(<span class="keyword">this</span>.canvas.nativeElement);
+
+      <span class="comment">// 3. Communicate with child component</span>
+      <span class="keyword">this</span>.legend.highlightFirst();
+      }
+
+      <span class="method">ngAfterViewChecked</span>(): <span class="keyword">void</span> {
+      <span class="comment">// Called after every change detection cycle that checks the view</span>
+      <span class="comment">// Be careful - this runs frequently!</span>
+
+      <span class="comment">// Example: Adjust layout after view updates</span>
+      <span class="keyword">if</span> (<span class="keyword">this</span>.<span class="method">shouldAdjustLayout</span>()) {
+      <span class="keyword">this</span>.<span class="method">adjustChartLayout</span>();
+      }
+      }
+
+      <span class="keyword">private</span> <span class="method">initializeChart</span>(): <span class="keyword">void</span> {
+      <span class="keyword">const</span> ctx = <span class="keyword">this</span>.canvas.nativeElement.getContext(<span class="string">'2d'</span>);
+
+      <span class="comment">// Initialize third-party chart library</span>
+      <span class="comment">// This MUST be done after view init when canvas exists</span>
+      <span class="keyword">this</span>.chart = <span class="keyword">new</span> Chart(ctx, {
+      type: <span class="string">'line'</span>,
+      data: <span class="keyword">this</span>.chartData,
+      options: { responsive: <span class="keyword">true</span> }
+      });
+      }
+
+      <span class="method">updateChart</span>(): <span class="keyword">void</span> {
+      <span class="comment">// This will trigger ngAfterViewChecked</span>
+      <span class="keyword">this</span>.chartData = [...<span class="keyword">this</span>.chartData, Math.random() * 100];
+      <span class="keyword">if</span> (<span class="keyword">this</span>.chart) {
+      <span class="keyword">this</span>.chart.update();
+      }
+      }
+
+      <span class="method">ngOnDestroy</span>(): <span class="keyword">void</span> {
+      <span class="comment">// Clean up resources</span>
+      <span class="keyword">if</span> (<span class="keyword">this</span>.resizeObserver) {
+      <span class="keyword">this</span>.resizeObserver.disconnect();
+      }
+      <span class="keyword">if</span> (<span class="keyword">this</span>.chart) {
+      <span class="keyword">this</span>.chart.destroy();
+      }
+      }
+      }
+    </div>
+
+    <div class="warning-box">
+      <strong>⚠️ ExpressionChangedAfterItHasBeenCheckedError:</strong> Don't change component properties that affect the template in ngAfterViewInit or ngAfterViewChecked. This causes the infamous "Expression has changed" error!
+    </div>
+  </div>
+
+  <!-- Section 8: ngOnDestroy and Cleanup -->
+  <div class="section">
+    <h2>8. ngOnDestroy() - Component Cleanup</h2>
+
+    <div class="mermaid">
+      graph TD
+      A[Component Removal Triggered] --> B[ngOnDestroy Called]
+
+      B --> C[Unsubscribe Observables]
+      B --> D[Clear Timers/Intervals]
+      B --> E[Disconnect Event Listeners]
+      B --> F[Clean External Resources]
+      B --> G[Cancel HTTP Requests]
+
+      C --> H[Prevent Memory Leaks]
+      D --> H
+      E --> H
+      F --> H
+      G --> H
+
+      H --> I[Component Destroyed]
+      I --> J[Removed from DOM]
+      J --> K[Garbage Collection]
+    </div>
+
+    <h3>Complete Cleanup Example:</h3>
+    <div class="code-example">
+      <span class="decorator">@Component</span>({
+      <span class="property">selector</span>: <span class="string">'app-dashboard'</span>,
+      <span class="property">template</span>: <span class="string">`...`</span>
+      })
+      <span class="keyword">export class</span> <span class="method">DashboardComponent</span> <span class="keyword">implements</span> OnInit, OnDestroy {
+      <span class="comment">// Subscriptions</span>
+      <span class="keyword">private</span> <span class="property">dataSubscription</span>: Subscription;
+      <span class="keyword">private</span> <span class="property">routeSubscription</span>: Subscription;
+      <span class="keyword">private</span> <span class="property">destroy$</span> = <span class="keyword">new</span> Subject&lt;<span class="keyword">void</span>&gt;();
+
+      <span class="comment">// Timers</span>
+      <span class="keyword">private</span> <span class="property">refreshTimer</span>: any;
+      <span class="keyword">private</span> <span class="property">animationFrame</span>: <span class="keyword">number</span>;
+
+      <span class="comment">// Event listeners</span>
+      <span class="keyword">private</span> <span class="property">resizeHandler</span> = <span class="keyword">this</span>.<span class="method">onResize</span>.bind(<span class="keyword">this</span>);
+      <span class="keyword">private</span> <span class="property">documentClickHandler</span> = <span class="keyword">this</span>.<span class="method">onDocumentClick</span>.bind(<span class="keyword">this</span>);
+
+      <span class="comment">// External resources</span>
+      <span class="keyword">private</span> <span class="property">websocket</span>: WebSocket;
+      <span class="keyword">private</span> <span class="property">worker</span>: Worker;
+
+      <span class="keyword">constructor</span>(
+      <span class="keyword">private</span> <span class="property">dataService</span>: DataService,
+      <span class="keyword">private</span> <span class="property">route</span>: ActivatedRoute
+      ) {}
+
+      <span class="method">ngOnInit</span>(): <span class="keyword">void</span> {
+      <span class="comment">// 1. Setup subscriptions</span>
+      <span class="keyword">this</span>.dataSubscription = <span class="keyword">this</span>.dataService.getData()
+      .subscribe(data => console.log(data));
+
+      <span class="comment">// 2. Using takeUntil pattern (alternative approach)</span>
+      <span class="keyword">this</span>.dataService.updates$
+      .pipe(takeUntil(<span class="keyword">this</span>.destroy$))
+      .subscribe(update => console.log(update));
+
+      <span class="comment">// 3. Route params subscription</span>
+      <span class="keyword">this</span>.routeSubscription = <span class="keyword">this</span>.route.params
+      .subscribe(params => console.log(params));
+
+      <span class="comment">// 4. Setup timer</span>
+      <span class="keyword">this</span>.refreshTimer = setInterval(() => {
+      <span class="keyword">this</span>.<span class="method">refreshData</span>();
+      }, 5000);
+
+      <span class="comment">// 5. Setup event listeners</span>
+      window.addEventListener(<span class="string">'resize'</span>, <span class="keyword">this</span>.resizeHandler);
+      document.addEventListener(<span class="string">'click'</span>, <span class="keyword">this</span>.documentClickHandler);
+
+      <span class="comment">// 6. Setup WebSocket</span>
+      <span class="keyword">this</span>.websocket = <span class="keyword">new</span> WebSocket(<span class="string">'ws://localhost:8080'</span>);
+
+      <span class="comment">// 7. Setup Web Worker</span>
+      <span class="keyword">if</span> (<span class="keyword">typeof</span> Worker !== <span class="string">'undefined'</span>) {
+      <span class="keyword">this</span>.worker = <span class="keyword">new</span> Worker(<span class="string">'./data.worker'</span>);
+      <span class="keyword">this</span>.worker.onmessage = ({ data }) => {
+      console.log(data);
+      };
+      }
+
+      <span class="comment">// 8. Animation frame</span>
+      <span class="keyword">this</span>.<span class="method">animate</span>();
+      }
+
+      <span class="method">ngOnDestroy</span>(): <span class="keyword">void</span> {
+      <span class="comment">// Called once, right before component is destroyed</span>
+      console.log(<span class="string">'Cleaning up component resources...'</span>);
+
+      <span class="comment">// 1. Unsubscribe from observables</span>
+      <span class="keyword">if</span> (<span class="keyword">this</span>.dataSubscription) {
+      <span class="keyword">this</span>.dataSubscription.unsubscribe();
+      }
+      <span class="keyword">if</span> (<span class="keyword">this</span>.routeSubscription) {
+      <span class="keyword">this</span>.routeSubscription.unsubscribe();
+      }
+
+      <span class="comment">// 2. Complete subject for takeUntil pattern</span>
+      <span class="keyword">this</span>.destroy$.next();
+      <span class="keyword">this</span>.destroy$.complete();
+
+      <span class="comment">// 3. Clear timers</span>
+      <span class="keyword">if</span> (<span class="keyword">this</span>.refreshTimer) {
+      clearInterval(<span class="keyword">this</span>.refreshTimer);
+      }
+
+      <span class="comment">// 4. Remove event listeners</span>
+      window.removeEventListener(<span class="string">'resize'</span>, <span class="keyword">this</span>.resizeHandler);
+      document.removeEventListener(<span class="string">'click'</span>, <span class="keyword">this</span>.documentClickHandler);
+
+      <span class="comment">// 5. Close WebSocket connection</span>
+      <span class="keyword">if</span> (<span class="keyword">this</span>.websocket) {
+      <span class="keyword">this</span>.websocket.close();
+      }
+
+      <span class="comment">// 6. Terminate Web Worker</span>
+      <span class="keyword">if</span> (<span class="keyword">this</span>.worker) {
+      <span class="keyword">this</span>.worker.terminate();
+      }
+
+      <span class="comment">// 7. Cancel animation frame</span>
+      <span class="keyword">if</span> (<span class="keyword">this</span>.animationFrame) {
+      cancelAnimationFrame(<span class="keyword">this</span>.animationFrame);
+      }
+
+      <span class="comment">// 8. Any other cleanup</span>
+      <span class="keyword">this</span>.<span class="method">cleanupResources</span>();
+      }
+
+      <span class="keyword">private</span> <span class="method">animate</span>(): <span class="keyword">void</span> {
+      <span class="comment">// Animation logic</span>
+      <span class="keyword">this</span>.animationFrame = requestAnimationFrame(() => {
+      <span class="keyword">this</span>.<span class="method">animate</span>();
+      });
+      }
+
+      <span class="keyword">private</span> <span class="method">onResize</span>(event: Event): <span class="keyword">void</span> {
+      console.log(<span class="string">'Window resized'</span>);
+      }
+
+      <span class="keyword">private</span> <span class="method">onDocumentClick</span>(event: MouseEvent): <span class="keyword">void</span> {
+      console.log(<span class="string">'Document clicked'</span>);
+      }
+      }
+    </div>
+
+    <div class="success-box">
+      <strong>✅ Memory Leak Prevention:</strong> Always clean up in ngOnDestroy! Unsubscribe from observables, clear timers, remove event listeners, and close connections to prevent memory leaks.
+    </div>
+  </div>
+
+  <!-- Section 9: Common Patterns and Best Practices -->
+  <div class="section">
+    <h2>9. Common Lifecycle Patterns</h2>
+
+    <h3>Pattern 1: Safe Subscription Management</h3>
+    <div class="code-example">
+      <span class="comment">// Using takeUntil pattern</span>
+      <span class="keyword">export class</span> <span class="method">SafeComponent</span> <span class="keyword">implements</span> OnInit, OnDestroy {
+      <span class="keyword">private</span> <span class="property">destroy$</span> = <span class="keyword">new</span> Subject&lt;<span class="keyword">void</span>&gt;();
+
+      <span class="method">ngOnInit</span>(): <span class="keyword">void</span> {
+      <span class="comment">// All subscriptions use takeUntil</span>
+      <span class="keyword">this</span>.service.data$
+      .pipe(
+      takeUntil(<span class="keyword">this</span>.destroy$),
+      filter(data => data !== <span class="keyword">null</span>),
+      map(data => data.value)
+      )
+      .subscribe(value => console.log(value));
+      }
+
+      <span class="method">ngOnDestroy</span>(): <span class="keyword">void</span> {
+      <span class="keyword">this</span>.destroy$.next();
+      <span class="keyword">this</span>.destroy$.complete();
+      }
+      }
+    </div>
+
+    <h3>Pattern 2: Loading Data with Error Handling</h3>
+    <div class="code-example">
+      <span class="keyword">export class</span> <span class="method">DataComponent</span> <span class="keyword">implements</span> OnInit {
+      <span class="property">data$</span>: Observable&lt;Data&gt;;
+      <span class="property">loading</span> = <span class="keyword">true</span>;
+      <span class="property">error</span>: <span class="keyword">string</span> | <span class="keyword">null</span> = <span class="keyword">null</span>;
+
+      <span class="method">ngOnInit</span>(): <span class="keyword">void</span> {
+      <span class="keyword">this</span>.data$ = <span class="keyword">this</span>.service.loadData().pipe(
+      tap(() => <span class="keyword">this</span>.loading = <span class="keyword">false</span>),
+      catchError(err => {
+      <span class="keyword">this</span>.error = err.message;
+      <span class="keyword">this</span>.loading = <span class="keyword">false</span>;
+      <span class="keyword">return</span> EMPTY;
+      }),
+      retry(2),
+      shareReplay(1)
+      );
+      }
+      }
+    </div>
+
+    <h3>Pattern 3: Parent-Child Communication</h3>
+    <div class="code-example">
+      <span class="comment">// Parent Component</span>
+      <span class="keyword">export class</span> <span class="method">ParentComponent</span> <span class="keyword">implements</span> AfterViewInit {
+      <span class="decorator">@ViewChild</span>(ChildComponent) <span class="property">child</span>: ChildComponent;
+
+      <span class="method">ngAfterViewInit</span>(): <span class="keyword">void</span> {
+      <span class="comment">// Child component is available</span>
+      <span class="keyword">this</span>.child.doSomething();
+      }
+      }
+
+      <span class="comment">// Child Component</span>
+      <span class="keyword">export class</span> <span class="method">ChildComponent</span> <span class="keyword">implements</span> OnChanges {
+      <span class="decorator">@Input()</span> <span class="property">data</span>: any;
+      <span class="decorator">@Output()</span> <span class="property">dataChange</span> = <span class="keyword">new</span> EventEmitter();
+
+      <span class="method">ngOnChanges</span>(changes: SimpleChanges): <span class="keyword">void</span> {
+      <span class="keyword">if</span> (changes[<span class="string">'data'</span>] && !changes[<span class="string">'data'</span>].firstChange) {
+      <span class="keyword">this</span>.<span class="method">processDataChange</span>(changes[<span class="string">'data'</span>].currentValue);
+      }
+      }
+      }
+    </div>
+  </div>
+
+  <!-- Section 10: Lifecycle Order Comparison -->
+  <div class="section">
+    <h2>10. Complete Lifecycle Execution Order</h2>
+
+    <div class="mermaid">
+      graph TD
+      subgraph "Initialization Phase"
+      A[1. Constructor] --> B[2. ngOnChanges - First]
+      B --> C[3. ngOnInit]
+      C --> D[4. ngDoCheck - First]
+      D --> E[5. ngAfterContentInit]
+      E --> F[6. ngAfterContentChecked]
+      F --> G[7. ngAfterViewInit]
+      G --> H[8. ngAfterViewChecked]
+      end
+
+      subgraph "Update Phase - Repeats"
+      H --> I[Input Change or Event]
+      I --> J[9. ngOnChanges - If Input]
+      J --> K[10. ngDoCheck]
+      K --> L[11. ngAfterContentChecked]
+      L --> M[12. ngAfterViewChecked]
+      M --> I
+      end
+
+      subgraph "Destruction Phase"
+      I --> N[Component Removal]
+      N --> O[13. ngOnDestroy]
+      end
+    </div>
+
+    <h3>Real Component Example with All Hooks:</h3>
+    <div class="code-example">
+      <span class="decorator">@Component</span>({
+      <span class="property">selector</span>: <span class="string">'app-complete-lifecycle'</span>,
+      <span class="property">template</span>: <span class="string">`
+        &lt;div&gt;
+            &lt;h3&gt;{{ title }}&lt;/h3&gt;
+            &lt;ng-content&gt;&lt;/ng-content&gt;
+            &lt;div #viewChild&gt;View Child Content&lt;/div&gt;
+        &lt;/div&gt;
+    `</span>
+      })
+      <span class="keyword">export class</span> <span class="method">CompleteLifecycleComponent</span> <span class="keyword">implements</span>
+      OnChanges, OnInit, DoCheck,
+      AfterContentInit, AfterContentChecked,
+      AfterViewInit, AfterViewChecked, OnDestroy {
+
+      <span class="decorator">@Input()</span> <span class="property">title</span>: <span class="keyword">string</span>;
+      <span class="decorator">@ContentChild</span>(<span class="string">'content'</span>) <span class="property">content</span>: ElementRef;
+      <span class="decorator">@ViewChild</span>(<span class="string">'viewChild'</span>) <span class="property">viewChild</span>: ElementRef;
+
+      <span class="keyword">private</span> <span class="property">counter</span> = 0;
+
+      <span class="keyword">constructor</span>() {
+      console.log(<span class="string">`1. constructor - counter: ${++this.counter}`</span>);
+      console.log(<span class="string">'   - DI ready, inputs NOT set'</span>);
+      }
+
+      <span class="method">ngOnChanges</span>(changes: SimpleChanges): <span class="keyword">void</span> {
+      console.log(<span class="string">`2. ngOnChanges - counter: ${++this.counter}`</span>);
+      console.log(<span class="string">'   - Input properties changed:'</span>, changes);
+      }
+
+      <span class="method">ngOnInit</span>(): <span class="keyword">void</span> {
+      console.log(<span class="string">`3. ngOnInit - counter: ${++this.counter}`</span>);
+      console.log(<span class="string">'   - Component initialization, inputs ARE set'</span>);
+      console.log(<span class="string">`   - title: ${this.title}`</span>);
+      }
+
+      <span class="method">ngDoCheck</span>(): <span class="keyword">void</span> {
+      console.log(<span class="string">`4. ngDoCheck - counter: ${++this.counter}`</span>);
+      console.log(<span class="string">'   - Custom change detection'</span>);
+      }
+
+      <span class="method">ngAfterContentInit</span>(): <span class="keyword">void</span> {
+      console.log(<span class="string">`5. ngAfterContentInit - counter: ${++this.counter}`</span>);
+      console.log(<span class="string">'   - Content projection complete'</span>);
+      console.log(<span class="string">'   - ContentChild available:'</span>, <span class="keyword">this</span>.content);
+      }
+
+      <span class="method">ngAfterContentChecked</span>(): <span class="keyword">void</span> {
+      console.log(<span class="string">`6. ngAfterContentChecked - counter: ${++this.counter}`</span>);
+      console.log(<span class="string">'   - Content checked'</span>);
+      }
+
+      <span class="method">ngAfterViewInit</span>(): <span class="keyword">void</span> {
+      console.log(<span class="string">`7. ngAfterViewInit - counter: ${++this.counter}`</span>);
+      console.log(<span class="string">'   - View initialization complete'</span>);
+      console.log(<span class="string">'   - ViewChild available:'</span>, <span class="keyword">this</span>.viewChild);
+      }
+
+      <span class="method">ngAfterViewChecked</span>(): <span class="keyword">void</span> {
+      console.log(<span class="string">`8. ngAfterViewChecked - counter: ${++this.counter}`</span>);
+      console.log(<span class="string">'   - View checked'</span>);
+      }
+
+      <span class="method">ngOnDestroy</span>(): <span class="keyword">void</span> {
+      console.log(<span class="string">`9. ngOnDestroy - counter: ${++this.counter}`</span>);
+      console.log(<span class="string">'   - Cleanup before destruction'</span>);
+      }
+      }
+    </div>
+  </div>
+
+  <!-- Section 11: Common Mistakes -->
+  <div class="section">
+    <h2>11. Common Lifecycle Mistakes to Avoid</h2>
+
+    <div class="error-box">
+      <h3>❌ Mistake 1: Complex Logic in Constructor</h3>
+      <div class="code-example">
+        <span class="comment">// WRONG - Don't do this!</span>
+        <span class="keyword">constructor</span>(<span class="keyword">private</span> <span class="property">http</span>: HttpClient) {
+        <span class="keyword">this</span>.http.get(<span class="string">'/api/data'</span>).subscribe(); <span class="comment">// ❌ HTTP in constructor</span>
+        console.log(<span class="keyword">this</span>.inputValue); <span class="comment">// ❌ undefined - inputs not set</span>
+        }
+
+        <span class="comment">// CORRECT - Use ngOnInit</span>
+        <span class="method">ngOnInit</span>(): <span class="keyword">void</span> {
+        <span class="keyword">this</span>.http.get(<span class="string">'/api/data'</span>).subscribe(); <span class="comment">// ✅</span>
+        console.log(<span class="keyword">this</span>.inputValue); <span class="comment">// ✅ Has value</span>
+        }
+      </div>
+    </div>
+
+    <div class="error-box">
+      <h3>❌ Mistake 2: Memory Leaks from Subscriptions</h3>
+      <div class="code-example">
+        <span class="comment">// WRONG - Memory leak!</span>
+        <span class="method">ngOnInit</span>(): <span class="keyword">void</span> {
+        <span class="keyword">this</span>.service.data$.subscribe(data => {
+        <span class="keyword">this</span>.data = data; <span class="comment">// ❌ Never unsubscribed</span>
+        });
+        }
+
+        <span class="comment">// CORRECT - Clean up subscription</span>
+        <span class="keyword">private</span> <span class="property">subscription</span>: Subscription;
+
+        <span class="method">ngOnInit</span>(): <span class="keyword">void</span> {
+        <span class="keyword">this</span>.subscription = <span class="keyword">this</span>.service.data$.subscribe(data => {
+        <span class="keyword">this</span>.data = data;
+        });
+        }
+
+        <span class="method">ngOnDestroy</span>(): <span class="keyword">void</span> {
+        <span class="keyword">this</span>.subscription?.unsubscribe(); <span class="comment">// ✅ Cleaned up</span>
+        }
+      </div>
+    </div>
+
+    <div class="error-box">
+      <h3>❌ Mistake 3: Changing Data in Wrong Hooks</h3>
+      <div class="code-example">
+        <span class="comment">// WRONG - Causes ExpressionChangedAfterItHasBeenCheckedError</span>
+        <span class="method">ngAfterViewInit</span>(): <span class="keyword">void</span> {
+        <span class="keyword">this</span>.title = <span class="string">'New Title'</span>; <span class="comment">// ❌ Changes template after check</span>
+        }
+
+        <span class="comment">// CORRECT - Use setTimeout or Promise</span>
+        <span class="method">ngAfterViewInit</span>(): <span class="keyword">void</span> {
+        setTimeout(() => {
+        <span class="keyword">this</span>.title = <span class="string">'New Title'</span>; <span class="comment">// ✅ Deferred to next cycle</span>
+        });
+
+        <span class="comment">// OR use Promise</span>
+        Promise.resolve().then(() => {
+        <span class="keyword">this</span>.title = <span class="string">'New Title'</span>; <span class="comment">// ✅ Microtask queue</span>
+        });
+        }
+      </div>
+    </div>
+
+    <div class="error-box">
+      <h3>❌ Mistake 4: Heavy Operations in Frequently Called Hooks</h3>
+      <div class="code-example">
+        <span class="comment">// WRONG - Performance killer!</span>
+        <span class="method">ngDoCheck</span>(): <span class="keyword">void</span> {
+        <span class="comment">// ❌ This runs on EVERY change detection!</span>
+        <span class="keyword">this</span>.expensiveCalculation = <span class="keyword">this</span>.items.reduce((sum, item) => {
+        <span class="keyword">return</span> sum + <span class="keyword">this</span>.complexComputation(item);
+        }, 0);
+        }
+
+        <span class="comment">// CORRECT - Use memoization or compute only when needed</span>
+        <span class="keyword">private</span> <span class="property">lastItemsLength</span> = 0;
+        <span class="keyword">private</span> <span class="property">cachedResult</span> = 0;
+
+        <span class="method">ngDoCheck</span>(): <span class="keyword">void</span> {
+        <span class="comment">// ✅ Only recalculate when items actually change</span>
+        <span class="keyword">if</span> (<span class="keyword">this</span>.items.length !== <span class="keyword">this</span>.lastItemsLength) {
+        <span class="keyword">this</span>.lastItemsLength = <span class="keyword">this</span>.items.length;
+        <span class="keyword">this</span>.cachedResult = <span class="keyword">this</span>.calculateExpensive();
+        }
+        }
+      </div>
+    </div>
+
+    <div class="error-box">
+      <h3>❌ Mistake 5: Accessing View/Content Children Too Early</h3>
+      <div class="code-example">
+        <span class="comment">// WRONG - ViewChild not available yet</span>
+        <span class="method">ngOnInit</span>(): <span class="keyword">void</span> {
+        <span class="keyword">this</span>.viewChild.doSomething(); <span class="comment">// ❌ undefined error!</span>
+        }
+
+        <span class="comment">// CORRECT - Wait for ngAfterViewInit</span>
+        <span class="method">ngAfterViewInit</span>(): <span class="keyword">void</span> {
+        <span class="keyword">this</span>.viewChild.doSomething(); <span class="comment">// ✅ ViewChild is ready</span>
+        }
+
+        <span class="comment">// For ContentChild, use ngAfterContentInit</span>
+        <span class="method">ngAfterContentInit</span>(): <span class="keyword">void</span> {
+        <span class="keyword">this</span>.contentChild.doSomething(); <span class="comment">// ✅ ContentChild is ready</span>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 12: Performance Tips -->
+  <div class="section">
+    <h2>12. Performance Optimization Tips</h2>
+
+    <h3>Tip 1: Use OnPush Change Detection</h3>
+    <div class="code-example">
+      <span class="decorator">@Component</span>({
+      <span class="property">selector</span>: <span class="string">'app-optimized'</span>,
+      <span class="property">changeDetection</span>: ChangeDetectionStrategy.OnPush, <span class="comment">// ✅ Better performance</span>
+      <span class="property">template</span>: <span class="string">`...`</span>
+      })
+      <span class="keyword">export class</span> <span class="method">OptimizedComponent</span> {
+      <span class="decorator">@Input()</span> <span class="property">data</span>: any;
+
+      <span class="keyword">constructor</span>(<span class="keyword">private</span> <span class="property">cd</span>: ChangeDetectorRef) {}
+
+      <span class="method">updateData</span>(): <span class="keyword">void</span> {
+      <span class="comment">// Manually trigger change detection when needed</span>
+      <span class="keyword">this</span>.data = { ...newData };
+      <span class="keyword">this</span>.cd.markForCheck();
+      }
+      }
+    </div>
+
+    <h3>Tip 2: Use TrackBy with ngFor</h3>
+    <div class="code-example">
+      <span class="comment">// Template</span>
+      <span class="string">`
+&lt;div *ngFor="let item of items; trackBy: trackByFn"&gt;
+    {{ item.name }}
+&lt;/div&gt;
+`</span>
+
+      <span class="comment">// Component</span>
+      <span class="method">trackByFn</span>(index: <span class="keyword">number</span>, item: any): any {
+      <span class="keyword">return</span> item.id; <span class="comment">// ✅ Prevents unnecessary DOM recreations</span>
+      }
+    </div>
+
+    <h3>Tip 3: Unsubscribe Patterns Comparison</h3>
+    <div class="code-example">
+      <span class="comment">// Pattern 1: Manual unsubscribe</span>
+      <span class="keyword">private</span> <span class="property">sub</span>: Subscription;
+      <span class="method">ngOnInit</span>() { <span class="keyword">this</span>.sub = observable.subscribe(); }
+      <span class="method">ngOnDestroy</span>() { <span class="keyword">this</span>.sub?.unsubscribe(); }
+
+      <span class="comment">// Pattern 2: TakeUntil</span>
+      <span class="keyword">private</span> <span class="property">destroy$</span> = <span class="keyword">new</span> Subject();
+      <span class="method">ngOnInit</span>() {
+      observable.pipe(takeUntil(<span class="keyword">this</span>.destroy$)).subscribe();
+      }
+      <span class="method">ngOnDestroy</span>() {
+      <span class="keyword">this</span>.destroy$.next();
+      <span class="keyword">this</span>.destroy$.complete();
+      }
+
+      <span class="comment">// Pattern 3: Async pipe (auto-unsubscribes)</span>
+      <span class="property">data$</span> = <span class="keyword">this</span>.service.getData(); <span class="comment">// Use in template with | async</span>
+    </div>
+  </div>
+
+  <!-- Section 13: Testing Lifecycle Hooks -->
+  <div class="section">
+    <h2>13. Testing Lifecycle Hooks</h2>
+
+    <h3>Testing Example:</h3>
+    <div class="code-example">
+      describe(<span class="string">'LifecycleComponent'</span>, () => {
+      <span class="keyword">let</span> component: LifecycleComponent;
+      <span class="keyword">let</span> fixture: ComponentFixture&lt;LifecycleComponent&gt;;
+      <span class="keyword">let</span> service: jasmine.SpyObj&lt;DataService&gt;;
+
+      beforeEach(() => {
+      <span class="keyword">const</span> spy = jasmine.createSpyObj(<span class="string">'DataService'</span>, [<span class="string">'getData'</span>]);
+
+      TestBed.configureTestingModule({
+      declarations: [LifecycleComponent],
+      providers: [{ provide: DataService, useValue: spy }]
+      });
+
+      fixture = TestBed.createComponent(LifecycleComponent);
+      component = fixture.componentInstance;
+      service = TestBed.inject(DataService) <span class="keyword">as</span> jasmine.SpyObj&lt;DataService&gt;;
+      });
+
+      it(<span class="string">'should call ngOnInit'</span>, () => {
+      spyOn(component, <span class="string">'ngOnInit'</span>);
+
+      <span class="comment">// Trigger ngOnInit</span>
+      fixture.detectChanges();
+
+      expect(component.ngOnInit).toHaveBeenCalled();
+      });
+
+      it(<span class="string">'should load data in ngOnInit'</span>, () => {
+      service.getData.and.returnValue(of(mockData));
+
+      <span class="comment">// ngOnInit is called here</span>
+      fixture.detectChanges();
+
+      expect(service.getData).toHaveBeenCalled();
+      expect(component.data).toEqual(mockData);
+      });
+
+      it(<span class="string">'should detect input changes'</span>, () => {
+      spyOn(component, <span class="string">'ngOnChanges'</span>);
+
+      <span class="comment">// Set input and detect changes</span>
+      component.inputValue = <span class="string">'new value'</span>;
+      fixture.detectChanges();
+
+      expect(component.ngOnChanges).toHaveBeenCalled();
+      });
+
+      it(<span class="string">'should clean up on destroy'</span>, () => {
+      spyOn(component, <span class="string">'ngOnDestroy'</span>);
+
+      <span class="comment">// Destroy component</span>
+      fixture.destroy();
+
+      expect(component.ngOnDestroy).toHaveBeenCalled();
+      });
+
+      it(<span class="string">'should access ViewChild after view init'</span>, () => {
+      fixture.detectChanges(); <span class="comment">// ngAfterViewInit called</span>
+
+      expect(component.viewChild).toBeDefined();
+      });
+      });
+    </div>
+  </div>
+
+  <!-- Section 14: Migration Guide -->
+  <div class="section">
+    <h2>14. Migration from Lifecycle Hooks to Modern Patterns</h2>
+
+    <div class="mermaid">
+      graph TD
+      A[Traditional Lifecycle] --> B{Migration Path}
+
+      B --> C[ngOnInit]
+      C --> D[constructor + inject]
+
+      B --> E[ngOnDestroy]
+      E --> F[DestroyRef.onDestroy]
+
+      B --> G[ngOnChanges]
+      G --> H[Signal inputs]
+
+      B --> I[ViewChild/ContentChild]
+      I --> J[viewChild signal query]
+
+      D --> K[Modern Angular]
+      F --> K
+      H --> K
+      J --> K
+    </div>
+
+    <h3>Migration Examples:</h3>
+    <div class="code-example">
+      <span class="comment">// OLD: Class-based with lifecycle hooks</span>
+      <span class="decorator">@Component</span>({...})
+      <span class="keyword">export class</span> <span class="method">OldComponent</span> <span class="keyword">implements</span> OnInit, OnDestroy {
+      <span class="decorator">@Input()</span> <span class="property">data</span>: string;
+      <span class="keyword">private</span> <span class="property">subscription</span>: Subscription;
+
+      <span class="keyword">constructor</span>(<span class="keyword">private</span> <span class="property">service</span>: DataService) {}
+
+      <span class="method">ngOnInit</span>() {
+      <span class="keyword">this</span>.subscription = <span class="keyword">this</span>.service.getData().subscribe();
+      }
+
+      <span class="method">ngOnDestroy</span>() {
+      <span class="keyword">this</span>.subscription.unsubscribe();
+      }
+      }
+
+      <span class="comment">// NEW: Signal-based (Angular 16+)</span>
+      <span class="decorator">@Component</span>({...})
+      <span class="keyword">export class</span> <span class="method">ModernComponent</span> {
+      <span class="comment">// Signal inputs (Angular 17.1+)</span>
+      data = input&lt;string&gt;();
+
+      <span class="comment">// Services with inject</span>
+      <span class="keyword">private</span> service = inject(DataService);
+      <span class="keyword">private</span> destroyRef = inject(DestroyRef);
+
+      <span class="keyword">constructor</span>() {
+      <span class="comment">// Effect for reactive updates</span>
+      effect(() => {
+      console.log(<span class="string">'Data changed:'</span>, <span class="keyword">this</span>.data());
+      });
+
+      <span class="comment">// Subscription with auto-cleanup</span>
+      <span class="keyword">this</span>.service.getData()
+      .pipe(takeUntilDestroyed(<span class="keyword">this</span>.destroyRef))
+      .subscribe();
+
+      <span class="comment">// Cleanup without ngOnDestroy</span>
+      <span class="keyword">this</span>.destroyRef.onDestroy(() => {
+      console.log(<span class="string">'Cleanup logic here'</span>);
+      });
+      }
+      }
+    </div>
+  </div>
+
+  <!-- Section 15: Quick Reference Cheatsheet -->
+  <div class="section">
+    <h2>15. Lifecycle Hooks Cheatsheet</h2>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+      <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+        <h4 style="color: #667eea;">🎯 ngOnChanges</h4>
+        <ul>
+          <li>When: Input properties change</li>
+          <li>Use: React to @Input changes</li>
+          <li>Receives: SimpleChanges object</li>
+          <li>Called: Multiple times</li>
+        </ul>
+      </div>
+
+      <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+        <h4 style="color: #667eea;">🚀 ngOnInit</h4>
+        <ul>
+          <li>When: After first ngOnChanges</li>
+          <li>Use: Component initialization</li>
+          <li>Receives: Nothing</li>
+          <li>Called: Once only</li>
+        </ul>
+      </div>
+
+      <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+        <h4 style="color: #667eea;">🔍 ngDoCheck</h4>
+        <ul>
+          <li>When: Every change detection</li>
+          <li>Use: Custom change detection</li>
+          <li>Receives: Nothing</li>
+          <li>Called: Very frequently</li>
+        </ul>
+      </div>
+
+      <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+        <h4 style="color: #667eea;">📦 ngAfterContentInit</h4>
+        <ul>
+          <li>When: After content projection</li>
+          <li>Use: Access @ContentChild</li>
+          <li>Receives: Nothing</li>
+          <li>Called: Once only</li>
+        </ul>
+      </div>
+
+      <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+        <h4 style="color: #667eea;">✅ ngAfterContentChecked</h4>
+        <ul>
+          <li>When: After content checked</li>
+          <li>Use: Respond to content changes</li>
+          <li>Receives: Nothing</li>
+          <li>Called: After every check</li>
+        </ul>
+      </div>
+
+      <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+        <h4 style="color: #667eea;">🎨 ngAfterViewInit</h4>
+        <ul>
+          <li>When: After view initialized</li>
+          <li>Use: Access @ViewChild, DOM</li>
+          <li>Receives: Nothing</li>
+          <li>Called: Once only</li>
+        </ul>
+      </div>
+
+      <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+        <h4 style="color: #667eea;">👁️ ngAfterViewChecked</h4>
+        <ul>
+          <li>When: After view checked</li>
+          <li>Use: Respond to view changes</li>
+          <li>Receives: Nothing</li>
+          <li>Called: After every check</li>
+        </ul>
+      </div>
+
+      <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+        <h4 style="color: #667eea;">🧹 ngOnDestroy</h4>
+        <ul>
+          <li>When: Before destruction</li>
+          <li>Use: Cleanup resources</li>
+          <li>Receives: Nothing</li>
+          <li>Called: Once only</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer" style="text-align: center; padding: 40px 20px; color: white;">
+    <p>Created with ❤️ for Angular Developers</p>
+    <p>© 2024 - Complete Lifecycle Hooks Guide</p>
+    <div style="margin-top: 20px;">
+      <a href="/" style="color: white; margin: 0 10px;">Modern Angular Patterns</a>
+      <a href="angular-di-injection-context.html" style="color: white; margin: 0 10px;">DI & Injection Context</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    flowchart: {
+      useMaxWidth: true,
+      htmlLabels: true,
+      curve: 'basis'
+    }
+  });
+</script>
+</body>
+</html>
