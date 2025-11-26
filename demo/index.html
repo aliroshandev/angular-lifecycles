@@ -1,287 +1,305 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Angular 21 Standalone Lifecycle</title>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-    <style>
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-        .container {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        h1 {
-            color: #764ba2;
-            text-align: center;
-            font-size: 2.5em;
-            margin-bottom: 30px;
-        }
-        h2 {
-            color: #667eea;
-            border-bottom: 3px solid #667eea;
-            padding-bottom: 10px;
-            margin-top: 40px;
-        }
-        .mermaid {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 12px;
-            margin: 25px 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-    </style>
+  <title>Angular 21 Standalone Lifecycle</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+      body {
+          font-family: 'Segoe UI', system-ui, sans-serif;
+          max-width: 1600px;
+          margin: 0 auto;
+          padding: 20px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          min-height: 100vh;
+      }
+
+      .container {
+          background: white;
+          border-radius: 20px;
+          padding: 30px;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      }
+
+      .navigation {
+          background: white;
+          padding: 20px;
+          border-radius: 12px;
+          margin-bottom: 30px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+          color: #764ba2;
+          text-align: center;
+          font-size: 2.5em;
+          margin-bottom: 30px;
+      }
+
+      h2 {
+          color: #667eea;
+          border-bottom: 3px solid #667eea;
+          padding-bottom: 10px;
+          margin-top: 40px;
+      }
+
+      .mermaid {
+          background: #f8f9fa;
+          padding: 25px;
+          border-radius: 12px;
+          margin: 25px 0;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎯 Angular 21 Standalone Application Lifecycle</h1>
-        <a href="angular-di-injection-context.html">See DI Injection Context Flowcharts</a>
-        <a href="angular-traditional-lifecycles.html">Angular Traditional Lifecycles</a>
-
-        <h2>1. Standalone Application Bootstrap</h2>
-        <div class="mermaid">
-            graph TD
-                A[main.ts] --> B[bootstrapApplication]
-                B --> C[Root Standalone Component]
-                B --> D[Application Config]
-                D --> E[Providers Array]
-                E --> F[provideRouter]
-                E --> G[provideHttpClient]
-                E --> H[provideAnimations]
-                E --> I[provideExperimentalZonelessChangeDetection]
-                F --> J[Application Ready]
-                G --> J
-                H --> J
-                I --> J
-                C --> J
-        </div>
-
-        <h2>2. Component Lifecycle with Signals</h2>
-        <div class="mermaid">
-            graph TD
-                A[Constructor] --> B[Dependency Injection]
-                B --> C[Signal Initialization]
-                C --> D[Input Signals]
-                D --> E[Output Signals]
-                E --> F[Computed Signals]
-                F --> G[Effects Setup]
-                G --> H[ngOnInit]
-                H --> I[afterNextRender]
-                I --> J[afterRender]
-                J --> K[Component Running]
-                K --> L{Signal Changes?}
-                L -->|Yes| M[Auto Change Detection]
-                L -->|No| N{User Events?}
-                M --> O[Re-render]
-                O --> K
-                N -->|Click/Input| P[Update Signals]
-                N -->|Destroy| Q[ngOnDestroy]
-                P --> M
-                Q --> R[Cleanup]
-                R --> S[End]
-        </div>
-
-        <h2>3. Zoneless Change Detection</h2>
-        <div class="mermaid">
-            graph TD
-                A[Application Start] --> B[Zoneless Mode Active]
-                B --> C[Signal-based Updates]
-                C --> D[Signal Value Changes]
-                D --> E[Mark Specific Component]
-                E --> F[Local Change Detection]
-                B --> G[Event-based Updates]
-                G --> H[DOM Events]
-                H --> I[Handler Execution]
-                I --> J[Update State]
-                J --> K{Using Signals?}
-                K -->|Yes| D
-                K -->|No| L[Manual markForCheck]
-                L --> M[Schedule CD]
-                F --> N[Update DOM]
-                M --> N
-                N --> O[Wait for Next Change]
-                O --> D
-        </div>
-
-        <h2>4. Lazy Loading Standalone Components</h2>
-        <div class="mermaid">
-            graph TD
-                A[Route Navigation] --> B{Route Type?}
-                B -->|Eager| C[Direct Component Load]
-                B -->|Lazy| D[loadComponent Function]
-                D --> E[Dynamic Import]
-                E --> F{Already Loaded?}
-                F -->|No| G[Download Bundle]
-                F -->|Yes| H[Use Cached]
-                G --> I[Parse Component]
-                I --> J[Register Component]
-                J --> K[Create Instance]
-                H --> K
-                C --> K
-                K --> L[Inject Dependencies]
-                L --> M[Initialize Signals]
-                M --> N[Run Lifecycle]
-                N --> O[Render Component]
-        </div>
-
-        <h2>5. Dependency Injection in Standalone</h2>
-        <div class="mermaid">
-            graph TD
-                A[Standalone Component] --> B{DI Method?}
-                B -->|Constructor| C[Constructor Injection]
-                B -->|inject Function| D[inject Function]
-                C --> E[Deprecated Pattern]
-                D --> F[Recommended Approach]
-                F --> G{Injection Context?}
-                G -->|Constructor| H[In Constructor]
-                G -->|Field| I[Field Initializer]
-                G -->|Factory| J[Factory Function]
-                H --> K[Get Service]
-                I --> K
-                J --> K
-                K --> L{Service Scope?}
-                L -->|Root| M[Singleton]
-                L -->|Component| N[Component Scoped]
-                L -->|Route| O[Route Scoped]
-                M --> P[Use Service]
-                N --> P
-                O --> P
-        </div>
-
-        <h2>6. Signal-based State Management</h2>
-        <div class="mermaid">
-            graph TD
-                A[Global State Service] --> B[Signal Store]
-                B --> C[State Signals]
-                C --> D[signal Function]
-                C --> E[computed Function]
-                B --> F[State Methods]
-                F --> G[update Method]
-                F --> H[set Method]
-                F --> I[mutate Method]
-                J[Component 1] --> K[inject Store]
-                L[Component 2] --> M[inject Store]
-                N[Component 3] --> O[inject Store]
-                K --> P[Read Signals]
-                M --> P
-                O --> P
-                P --> Q[Auto-track Dependencies]
-                J --> R[Update State]
-                R --> S[Trigger Effects]
-                S --> T[Notify Consumers]
-                T --> U[Update Component 2]
-                T --> V[Update Component 3]
-        </div>
-
-        <h2>7. Resource API for HTTP</h2>
-        <div class="mermaid">
-            graph TD
-                A[resource Function] --> B[Configuration]
-                B --> C[loader Function]
-                B --> D[request Signal]
-                C --> E[HTTP Request]
-                E --> F{Response Status?}
-                F -->|Success| G[Update value Signal]
-                F -->|Error| H[Update error Signal]
-                F -->|Loading| I[isLoading Signal]
-                G --> J[Component Template]
-                H --> J
-                I --> J
-                J --> K[Template Binding]
-                K --> L[Display Data]
-                D --> M[Auto Refresh]
-                M --> E
-        </div>
-
-        <h2>8. Router Guards in Standalone</h2>
-        <div class="mermaid">
-            graph TD
-                A[Navigation Start] --> B[Route Guards]
-                B --> C[CanActivateFn]
-                C --> D{Guard Pass?}
-                D -->|Yes| E[ResolveFn]
-                D -->|No| F[Navigation Cancel]
-                E --> G[Load Component]
-                G --> H[Component Lifecycle]
-                H --> I[Navigation End]
-                I --> J[Route Active]
-                J --> K{New Navigation?}
-                K -->|Yes| L[CanDeactivateFn]
-                K -->|No| J
-                L --> M{Can Leave?}
-                M -->|Yes| A
-                M -->|No| N[Stay on Route]
-        </div>
-
-        <h2>9. Complete Application Flow</h2>
-        <div class="mermaid">
-            graph LR
-                A[main.ts] --> B[bootstrapApplication]
-                B --> C[App Config]
-                B --> D[Root Component]
-                C --> E[Global Providers]
-                D --> F[Router Outlet]
-                F --> G[Routes]
-                G --> H[Components]
-                H --> I[Signals]
-                H --> J[Services]
-                I --> K[State Management]
-                J --> L[Business Logic]
-                K --> M[UI Updates]
-                L --> M
-                M --> N[User Interaction]
-                N --> O[Events]
-                O --> I
-        </div>
-
-        <h2>10. Migration Path to Standalone</h2>
-        <div class="mermaid">
-            graph TD
-                A[Modular App] --> B[Analyze Dependencies]
-                B --> C[Convert Components]
-                C --> D[Add standalone true]
-                D --> E[Add imports array]
-                E --> F[Remove NgModules]
-                F --> G[Update main.ts]
-                G --> H[Update Routes]
-                H --> I[Test Application]
-                I --> J{Issues Found?}
-                J -->|Yes| K[Fix Imports]
-                J -->|No| L[Migration Complete]
-                K --> I
-                L --> M[Benefits Achieved]
-        </div>
-
-
-      <!-- Footer -->
-      <div class="footer" style="text-align: center; padding: 40px 20px; color: white;">
-        <p>Created with ❤️ for Angular Developers</p>
-        <p>© 2024 - Complete Lifecycle Hooks Guide</p>
-        <div style="margin-top: 20px;">
-          <a href="angular-traditional-lifecycles.html" style="color: white; margin: 0 10px;">Traditional Angular Lifecycles</a>
-          <a href="angular-di-injection-context.html" style="color: white; margin: 0 10px;">DI & Injection Context</a>
-        </div>
-      </div>
-
+<div class="container">
+  <h1>🎯 Angular 21 Standalone Application Lifecycle</h1>
+  <div class="navigation">
+    <div>
+      <a href="angular-di-injection-context.html">See DI Injection Context Flowcharts</a>
     </div>
+    <div>
+      <a href="angular-traditional-lifecycles.html">Angular Traditional Lifecycles</a>
+    </div>
+  </div>
+  <h2>1. Standalone Application Bootstrap</h2>
+  <div class="mermaid">
+    graph TD
+    A[main.ts] --> B[bootstrapApplication]
+    B --> C[Root Standalone Component]
+    B --> D[Application Config]
+    D --> E[Providers Array]
+    E --> F[provideRouter]
+    E --> G[provideHttpClient]
+    E --> H[provideAnimations]
+    E --> I[provideExperimentalZonelessChangeDetection]
+    F --> J[Application Ready]
+    G --> J
+    H --> J
+    I --> J
+    C --> J
+  </div>
 
-    <script>
-        mermaid.initialize({ 
-            startOnLoad: true,
-            theme: 'default',
-            flowchart: {
-                useMaxWidth: true,
-                htmlLabels: true,
-                curve: 'basis'
-            }
-        });
-    </script>
+  <h2>2. Component Lifecycle with Signals</h2>
+  <div class="mermaid">
+    graph TD
+    A[Constructor] --> B[Dependency Injection]
+    B --> C[Signal Initialization]
+    C --> D[Input Signals]
+    D --> E[Output Signals]
+    E --> F[Computed Signals]
+    F --> G[Effects Setup]
+    G --> H[ngOnInit]
+    H --> I[afterNextRender]
+    I --> J[afterRender]
+    J --> K[Component Running]
+    K --> L{Signal Changes?}
+    L -->|Yes| M[Auto Change Detection]
+    L -->|No| N{User Events?}
+    M --> O[Re-render]
+    O --> K
+    N -->|Click/Input| P[Update Signals]
+    N -->|Destroy| Q[ngOnDestroy]
+    P --> M
+    Q --> R[Cleanup]
+    R --> S[End]
+  </div>
+
+  <h2>3. Zoneless Change Detection</h2>
+  <div class="mermaid">
+    graph TD
+    A[Application Start] --> B[Zoneless Mode Active]
+    B --> C[Signal-based Updates]
+    C --> D[Signal Value Changes]
+    D --> E[Mark Specific Component]
+    E --> F[Local Change Detection]
+    B --> G[Event-based Updates]
+    G --> H[DOM Events]
+    H --> I[Handler Execution]
+    I --> J[Update State]
+    J --> K{Using Signals?}
+    K -->|Yes| D
+    K -->|No| L[Manual markForCheck]
+    L --> M[Schedule CD]
+    F --> N[Update DOM]
+    M --> N
+    N --> O[Wait for Next Change]
+    O --> D
+  </div>
+
+  <h2>4. Lazy Loading Standalone Components</h2>
+  <div class="mermaid">
+    graph TD
+    A[Route Navigation] --> B{Route Type?}
+    B -->|Eager| C[Direct Component Load]
+    B -->|Lazy| D[loadComponent Function]
+    D --> E[Dynamic Import]
+    E --> F{Already Loaded?}
+    F -->|No| G[Download Bundle]
+    F -->|Yes| H[Use Cached]
+    G --> I[Parse Component]
+    I --> J[Register Component]
+    J --> K[Create Instance]
+    H --> K
+    C --> K
+    K --> L[Inject Dependencies]
+    L --> M[Initialize Signals]
+    M --> N[Run Lifecycle]
+    N --> O[Render Component]
+  </div>
+
+  <h2>5. Dependency Injection in Standalone</h2>
+  <div class="mermaid">
+    graph TD
+    A[Standalone Component] --> B{DI Method?}
+    B -->|Constructor| C[Constructor Injection]
+    B -->|inject Function| D[inject Function]
+    C --> E[Deprecated Pattern]
+    D --> F[Recommended Approach]
+    F --> G{Injection Context?}
+    G -->|Constructor| H[In Constructor]
+    G -->|Field| I[Field Initializer]
+    G -->|Factory| J[Factory Function]
+    H --> K[Get Service]
+    I --> K
+    J --> K
+    K --> L{Service Scope?}
+    L -->|Root| M[Singleton]
+    L -->|Component| N[Component Scoped]
+    L -->|Route| O[Route Scoped]
+    M --> P[Use Service]
+    N --> P
+    O --> P
+  </div>
+
+  <h2>6. Signal-based State Management</h2>
+  <div class="mermaid">
+    graph TD
+    A[Global State Service] --> B[Signal Store]
+    B --> C[State Signals]
+    C --> D[signal Function]
+    C --> E[computed Function]
+    B --> F[State Methods]
+    F --> G[update Method]
+    F --> H[set Method]
+    F --> I[mutate Method]
+    J[Component 1] --> K[inject Store]
+    L[Component 2] --> M[inject Store]
+    N[Component 3] --> O[inject Store]
+    K --> P[Read Signals]
+    M --> P
+    O --> P
+    P --> Q[Auto-track Dependencies]
+    J --> R[Update State]
+    R --> S[Trigger Effects]
+    S --> T[Notify Consumers]
+    T --> U[Update Component 2]
+    T --> V[Update Component 3]
+  </div>
+
+  <h2>7. Resource API for HTTP</h2>
+  <div class="mermaid">
+    graph TD
+    A[resource Function] --> B[Configuration]
+    B --> C[loader Function]
+    B --> D[request Signal]
+    C --> E[HTTP Request]
+    E --> F{Response Status?}
+    F -->|Success| G[Update value Signal]
+    F -->|Error| H[Update error Signal]
+    F -->|Loading| I[isLoading Signal]
+    G --> J[Component Template]
+    H --> J
+    I --> J
+    J --> K[Template Binding]
+    K --> L[Display Data]
+    D --> M[Auto Refresh]
+    M --> E
+  </div>
+
+  <h2>8. Router Guards in Standalone</h2>
+  <div class="mermaid">
+    graph TD
+    A[Navigation Start] --> B[Route Guards]
+    B --> C[CanActivateFn]
+    C --> D{Guard Pass?}
+    D -->|Yes| E[ResolveFn]
+    D -->|No| F[Navigation Cancel]
+    E --> G[Load Component]
+    G --> H[Component Lifecycle]
+    H --> I[Navigation End]
+    I --> J[Route Active]
+    J --> K{New Navigation?}
+    K -->|Yes| L[CanDeactivateFn]
+    K -->|No| J
+    L --> M{Can Leave?}
+    M -->|Yes| A
+    M -->|No| N[Stay on Route]
+  </div>
+
+  <h2>9. Complete Application Flow</h2>
+  <div class="mermaid">
+    graph LR
+    A[main.ts] --> B[bootstrapApplication]
+    B --> C[App Config]
+    B --> D[Root Component]
+    C --> E[Global Providers]
+    D --> F[Router Outlet]
+    F --> G[Routes]
+    G --> H[Components]
+    H --> I[Signals]
+    H --> J[Services]
+    I --> K[State Management]
+    J --> L[Business Logic]
+    K --> M[UI Updates]
+    L --> M
+    M --> N[User Interaction]
+    N --> O[Events]
+    O --> I
+  </div>
+
+  <h2>10. Migration Path to Standalone</h2>
+  <div class="mermaid">
+    graph TD
+    A[Modular App] --> B[Analyze Dependencies]
+    B --> C[Convert Components]
+    C --> D[Add standalone true]
+    D --> E[Add imports array]
+    E --> F[Remove NgModules]
+    F --> G[Update main.ts]
+    G --> H[Update Routes]
+    H --> I[Test Application]
+    I --> J{Issues Found?}
+    J -->|Yes| K[Fix Imports]
+    J -->|No| L[Migration Complete]
+    K --> I
+    L --> M[Benefits Achieved]
+  </div>
+
+
+  <!-- Footer -->
+  <div class="footer" style="text-align: center; padding: 40px 20px; color: white;">
+    <p>Created with ❤️ for Angular Developers</p>
+    <p>© 2024 - Complete Lifecycle Hooks Guide</p>
+    <div style="margin-top: 20px;">
+      <a href="angular-traditional-lifecycles.html" style="color: white; margin: 0 10px;">Traditional Angular
+        Lifecycles</a>
+      <a href="angular-di-injection-context.html" style="color: white; margin: 0 10px;">DI & Injection Context</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    flowchart: {
+      useMaxWidth: true,
+      htmlLabels: true,
+      curve: 'basis'
+    }
+  });
+</script>
 </body>
 </html>
