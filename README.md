@@ -3,7 +3,7 @@
 [![Angular](https://img.shields.io/badge/Angular-21-red.svg)](https://angular.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue.svg)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Demo](https://img.shields.io/badge/Demo-Vercel-black.svg)](https://angular-di-flowchart.vercel.app)
+[![Demo](https://img.shields.io/badge/Demo-Vercel-black.svg)](https://angular-lifecycles.vercel.app)
 
 A comprehensive visual guide to Angular 21's Dependency Injection system and Injection Context, featuring interactive flowcharts and real-world examples.
 
@@ -19,7 +19,7 @@ A comprehensive visual guide to Angular 21's Dependency Injection system and Inj
 
 ## 🖥️ Live Demo
 
-🔗 [View Live Demo on Vercel](https://angular-di-flowchart.vercel.app)
+🔗 [View Live Demo on Vercel](https://angular-lifecycles.vercel.app)
 
 ## 🛠️ Tech Stack
 
@@ -40,5 +40,5 @@ A comprehensive visual guide to Angular 21's Dependency Injection system and Inj
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/angular-di-guide.git
-cd angular-di-guide
+git clone https://github.com/aliroshandev/angular-lifecycles.git
+cd angular-lifecycles
