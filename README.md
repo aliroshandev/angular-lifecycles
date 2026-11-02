@@ -1,44 +1,37 @@
-# 🚀 Angular 21 DI & Injection Context - Complete Visual Guide
+# Angular Lifecycles Guide
 
-[![Angular](https://img.shields.io/badge/Angular-21-red.svg)](https://angular.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue.svg)](https://www.typescriptlang.org/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Demo](https://img.shields.io/badge/Demo-Vercel-black.svg)](https://angular-lifecycles.vercel.app)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-A comprehensive visual guide to Angular 21's Dependency Injection system and Injection Context, featuring interactive flowcharts and real-world examples.
+A free visual reference for how Angular applications run, written for developers who already know Angular. Checked against Angular 22 in November 2026.
 
-## ✨ Features
+**[Open the guide](https://angular-lifecycles.vercel.app)**
 
-- 📊 **Interactive Flowcharts** - Visual representation of DI concepts
-- 🎯 **Injection Context** - Complete guide to all injection contexts
-- 🔄 **Service Lifecycle** - Understand service creation and destruction
-- 🏗️ **Standalone Architecture** - Modern Angular without NgModules
-- 🚦 **Signal Integration** - How DI works with signals
-- 🧪 **Testing Patterns** - Best practices for testing with DI
-- 📱 **Responsive Design** - Works on all devices
+## What's inside
 
-## 🖥️ Live Demo
+| Page | Covers |
+|---|---|
+| [Modern application lifecycle](https://angular-lifecycles.vercel.app) | Bootstrap, signals, zoneless change detection, lazy loading, resources and router guards |
+| [Dependency injection](https://angular-lifecycles.vercel.app/angular-di-injection-context.html) | Injection context, injector hierarchy, service scopes, advanced providers and testing |
+| [Lifecycle hooks](https://angular-lifecycles.vercel.app/angular-traditional-lifecycles.html) | The eight hooks, execution order, common mistakes, testing and a cheat sheet |
 
-🔗 [View Live Demo on Vercel](https://angular-lifecycles.vercel.app)
+## How it's built
 
-## 🛠️ Tech Stack
+The guide is three static HTML pages. The flowcharts use [Mermaid](https://mermaid.js.org), loaded from a CDN. There's no Angular app, build step or dependency to install, and the code samples are for reading rather than running.
 
-- **Angular 21** - Latest version with standalone components
-- **TypeScript 5.3** - Type-safe development
-- **Signals** - Reactive state management
-- **Mermaid.js** - Interactive flowcharts
-- **Vercel** - Deployment platform
-
-## 📋 Prerequisites
-
-- Node.js 22+ 
-- npm 10+ or pnpm 8+
-- Angular CLI 20+
-
-## 🚀 Quick Start
-
-### 1. Clone the repository
+## Run it locally
 
 ```bash
 git clone https://github.com/aliroshandev/angular-lifecycles.git
-cd angular-lifecycles
+cd angular-lifecycles/demo
+npx serve .
+```
+
+You can also open the HTML files directly, but the "Back" links that point to `/` only work from a server.
+
+## Corrections
+
+Angular changes quickly. If something is wrong or out of date, please [open an issue](https://github.com/aliroshandev/angular-lifecycles/issues) and include a link to the Angular docs.
+
+## License
+
+MIT

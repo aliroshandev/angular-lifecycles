@@ -1,8 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Angular 21 Standalone Lifecycle</title>
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Angular Application Lifecycle</title>
+  <meta name="description" content="Flowcharts of the modern Angular application lifecycle: bootstrap, signals, zoneless change detection, lazy loading, resources and router guards.">
+  <link rel="canonical" href="https://angular-lifecycles.vercel.app/">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://angular-lifecycles.vercel.app/">
+  <meta property="og:title" content="Modern Angular Application Lifecycle">
+  <meta property="og:description" content="Flowcharts of the modern Angular application lifecycle: bootstrap, signals, zoneless change detection, lazy loading, resources and router guards.">
+  <meta name="twitter:card" content="summary">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.8/dist/mermaid.min.js"></script>
   <style>
       body {
           font-family: 'Segoe UI', system-ui, sans-serif;
@@ -49,17 +58,23 @@
           margin: 25px 0;
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
+      @media (max-width: 600px) {
+          body { padding: 8px; }
+          .container { padding: 16px; border-radius: 12px; }
+          h1 { font-size: 1.75rem; }
+      }
   </style>
 </head>
 <body>
 <div class="container">
-  <h1>🎯 Angular 21 Standalone Application Lifecycle</h1>
+  <h1>🎯 Modern Angular Application Lifecycle</h1>
+  <p>Flowcharts for reference. Checked against Angular 22.</p>
   <div class="navigation">
     <div>
-      <a href="angular-di-injection-context.html">See DI Injection Context Flowcharts</a>
+      <a href="angular-di-injection-context.html">DI & Injection Context</a>
     </div>
     <div>
-      <a href="angular-traditional-lifecycles.html">Angular Traditional Lifecycles</a>
+      <a href="angular-traditional-lifecycles.html">Lifecycle Hooks</a>
     </div>
   </div>
   <h2>1. Standalone Application Bootstrap</h2>
@@ -71,11 +86,9 @@
     D --> E[Providers Array]
     E --> F[provideRouter]
     E --> G[provideHttpClient]
-    E --> H[provideAnimations]
-    E --> I[provideExperimentalZonelessChangeDetection]
+    D --> I[Zoneless by Default Since v21]
     F --> J[Application Ready]
     G --> J
-    H --> J
     I --> J
     C --> J
   </div>
@@ -91,7 +104,7 @@
     F --> G[Effects Setup]
     G --> H[ngOnInit]
     H --> I[afterNextRender]
-    I --> J[afterRender]
+    I --> J[afterEveryRender]
     J --> K[Component Running]
     K --> L{Signal Changes?}
     L -->|Yes| M[Auto Change Detection]
@@ -115,7 +128,7 @@
     E --> F[Local Change Detection]
     B --> G[Event-based Updates]
     G --> H[DOM Events]
-    H --> I[Handler Execution]
+    H --> I[Handler Runs and Marks View Dirty]
     I --> J[Update State]
     J --> K{Using Signals?}
     K -->|Yes| D
@@ -154,7 +167,7 @@
     A[Standalone Component] --> B{DI Method?}
     B -->|Constructor| C[Constructor Injection]
     B -->|inject Function| D[inject Function]
-    C --> E[Deprecated Pattern]
+    C --> E[Still Supported, Older Style]
     D --> F[Recommended Approach]
     F --> G{Injection Context?}
     G -->|Constructor| H[In Constructor]
@@ -182,7 +195,6 @@
     B --> F[State Methods]
     F --> G[update Method]
     F --> H[set Method]
-    F --> I[mutate Method]
     J[Component 1] --> K[inject Store]
     L[Component 2] --> M[inject Store]
     N[Component 3] --> O[inject Store]
@@ -202,8 +214,8 @@
     graph TD
     A[resource Function] --> B[Configuration]
     B --> C[loader Function]
-    B --> D[request Signal]
-    C --> E[HTTP Request]
+    B --> D[params Function]
+    C --> E[Async Request]
     E --> F{Response Status?}
     F -->|Success| G[Update value Signal]
     F -->|Error| H[Update error Signal]
@@ -213,28 +225,26 @@
     I --> J
     J --> K[Template Binding]
     K --> L[Display Data]
-    D --> M[Auto Refresh]
+    D --> M[Reloads When Params Change]
     M --> E
   </div>
 
   <h2>8. Router Guards in Standalone</h2>
   <div class="mermaid">
     graph TD
-    A[Navigation Start] --> B[Route Guards]
-    B --> C[CanActivateFn]
-    C --> D{Guard Pass?}
-    D -->|Yes| E[ResolveFn]
-    D -->|No| F[Navigation Cancel]
-    E --> G[Load Component]
-    G --> H[Component Lifecycle]
-    H --> I[Navigation End]
-    I --> J[Route Active]
-    J --> K{New Navigation?}
-    K -->|Yes| L[CanDeactivateFn]
-    K -->|No| J
-    L --> M{Can Leave?}
-    M -->|Yes| A
-    M -->|No| N[Stay on Route]
+    A[Navigation Start] --> B[CanMatchFn]
+    B --> C{Route Matched?}
+    C -->|No| D[Try Next Route]
+    C -->|Yes| E[CanDeactivateFn on Current Route]
+    E --> F{Can Leave?}
+    F -->|No| G[Navigation Cancelled]
+    F -->|Yes| H[CanActivateFn]
+    H --> I{Guard Pass?}
+    I -->|No| G
+    I -->|Yes| J[ResolveFn]
+    J --> K[Load Lazy Component]
+    K --> L[Activate Component]
+    L --> M[Navigation End]
   </div>
 
   <h2>9. Complete Application Flow</h2>
@@ -263,8 +273,8 @@
     graph TD
     A[Modular App] --> B[Analyze Dependencies]
     B --> C[Convert Components]
-    C --> D[Add standalone true]
-    D --> E[Add imports array]
+    C --> D[Run ng generate @angular/core:standalone]
+    D --> E[Check imports arrays]
     E --> F[Remove NgModules]
     F --> G[Update main.ts]
     G --> H[Update Routes]
@@ -280,10 +290,9 @@
   <!-- Footer -->
   <div class="footer" style="text-align: center; padding: 40px 20px">
     <p>Created with ❤️ for Angular Developers</p>
-    <p>© 2024 - Complete Lifecycle Hooks Guide</p>
+    <p>© 2025 Ali Roshanzamir. Checked against Angular 22, November 2026.</p>
     <div style="margin-top: 20px;">
-      <a href="angular-traditional-lifecycles.html" style="margin: 0 10px;">Traditional Angular
-        Lifecycles</a>
+      <a href="angular-traditional-lifecycles.html" style="margin: 0 10px;">Lifecycle Hooks</a>
       <a href="angular-di-injection-context.html" style="margin: 0 10px;">DI & Injection Context</a>
     </div>
   </div>
